@@ -1,14 +1,9 @@
 import { Button } from "@material-ui/core";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import { ChannelsAvailabilityDropdown } from "@saleor/components/ChannelsAvailabilityDropdown";
-import Checkbox from "@saleor/components/Checkbox";
-import MoneyRange from "@saleor/components/MoneyRange";
 import ResponsiveTable from "@saleor/components/ResponsiveTable";
-import Skeleton from "@saleor/components/Skeleton";
 import TableCellAvatar, {
   AVATAR_MARGIN
 } from "@saleor/components/TableCellAvatar";
