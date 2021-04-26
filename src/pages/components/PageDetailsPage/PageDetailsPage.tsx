@@ -98,6 +98,8 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
     onCloseDialog();
   };
 
+  const isShowProductList = true;
+
   return (
     <PageForm
       page={page}
@@ -136,7 +138,7 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
                 onContentChange={handlers.changeContent}
               />
               <CardSpacer />
-              <MainProductList />
+              {isShowProductList && <MainProductList />}
               <CardSpacer />
               <SeoForm
                 errors={errors}
