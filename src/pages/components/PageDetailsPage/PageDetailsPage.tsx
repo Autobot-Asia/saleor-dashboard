@@ -25,13 +25,17 @@ import { FetchMoreProps } from "@saleor/types";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { PageDetails_page } from "../../types/PageDetails";
-import { MainProductList } from "../MainProductList/MainProductList";
+import {
+  PageDetails_carousel_media,
+  PageDetails_page
+} from "../../types/PageDetails";
+import PageCarousel from "../PageCarousel";
 import PageInfo from "../PageInfo";
 import PageOrganizeContent from "../PageOrganizeContent";
 import PageForm, { PageData, PageUpdateHandlers } from "./form";
 
 export interface PageDetailsPageProps {
+  onImageDelete?: (id: string) => void;
   loading: boolean;
   errors: PageErrorWithAttributesFragment[];
   page: PageDetails_page;
@@ -52,6 +56,9 @@ export interface PageDetailsPageProps {
   fetchReferenceProducts?: (data: string) => void;
   fetchMoreReferenceProducts?: FetchMoreProps;
   onCloseDialog: () => void;
+  carousel?: PageDetails_carousel_media[];
+  placeholderImage?: string;
+  onImageUpload?(file: File);
 }
 
 const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
@@ -73,7 +80,11 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
   fetchMoreReferencePages,
   fetchReferenceProducts,
   fetchMoreReferenceProducts,
-  onCloseDialog
+  onCloseDialog,
+  carousel,
+  placeholderImage,
+  onImageUpload,
+  onImageDelete
 }) => {
   const intl = useIntl();
   const localizeDate = useDateLocalize();
@@ -136,7 +147,14 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
                 onContentChange={handlers.changeContent}
               />
               <CardSpacer />
-              <MainProductList />
+              {pageExists && (
+                <PageCarousel
+                  carousel={carousel}
+                  placeholderImage={placeholderImage}
+                  onImageDelete={onImageDelete}
+                  onImageUpload={onImageUpload}
+                />
+              )}
               <CardSpacer />
               <SeoForm
                 errors={errors}

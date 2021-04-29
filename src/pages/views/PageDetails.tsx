@@ -1,3 +1,4 @@
+import placeholderImg from "@assets/images/placeholder255x255.png";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { useAttributeValueDeleteMutation } from "@saleor/attributes/mutations";
 import {
@@ -36,8 +37,15 @@ import { getStringOrPlaceholder, maybe } from "../../misc";
 import { AttributeValueInput, PageInput } from "../../types/globalTypes";
 import PageDetailsPage from "../components/PageDetailsPage";
 import { PageData, PageSubmitData } from "../components/PageDetailsPage/form";
-import { usePageRemoveMutation, usePageUpdateMutation } from "../mutations";
+import {
+  TypedListCarousel,
+  usePageCarouselCreateMutation,
+  usePageCarouselDeleteMutation,
+  usePageRemoveMutation,
+  usePageUpdateMutation
+} from "../mutations";
 import { usePageDetailsQuery } from "../queries";
+import { PageCarouselVariables } from "../types/PageCarousel";
 import { PageRemove } from "../types/PageRemove";
 import { pageListUrl, pageUrl, PageUrlQueryParams } from "../urls";
 
@@ -180,44 +188,106 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
     onFetchMore: loadMoreProducts
   };
 
+  const createImageUploadHandler = (
+    id: string,
+    createCarouselImage: (variables: PageCarouselVariables) => void
+  ) => (file: File) => {
+    createCarouselImage({
+      alt: "",
+      image: file,
+      page: id
+    });
+  };
+
+  const [createCarouselImage] = usePageCarouselCreateMutation({
+    onCompleted: data => {
+      const imageError = data.pageCarouselCreate.errors.find(
+        error => error.field === ("image" as keyof PageCarouselVariables)
+      );
+      if (imageError) {
+        notify({
+          status: "error",
+          text: intl.formatMessage(commonMessages.somethingWentWrong)
+        });
+      }
+    }
+  });
+
+  const handleImageUpload = createImageUploadHandler(id, variables =>
+    createCarouselImage({ variables })
+  );
+  const [deletePageCarouselImage] = usePageCarouselDeleteMutation({
+    onCompleted: () =>
+      notify({
+        status: "success",
+        text: intl.formatMessage(commonMessages.savedChanges)
+      })
+  });
+  const handleImageDelete = (id: string) => () =>
+    deletePageCarouselImage({ variables: { id } });
+
   return (
     <>
       <WindowTitle title={maybe(() => pageDetails.data.page.title)} />
-      <PageDetailsPage
-        loading={
-          pageDetails.loading ||
-          pageUpdateOpts.loading ||
-          uploadFileOpts.loading ||
-          deleteAttributeValueOpts.loading
-        }
-        errors={pageUpdateOpts.data?.pageUpdate.errors || []}
-        saveButtonBarState={pageUpdateOpts.status}
-        page={pageDetails.data?.page}
-        onBack={() => navigate(pageListUrl())}
-        onRemove={() =>
-          navigate(
-            pageUrl(id, {
-              action: "remove"
-            })
-          )
-        }
-        onSubmit={handleSubmit}
-        assignReferencesAttributeId={
-          params.action === "assign-attribute-value" && params.id
-        }
-        onAssignReferencesClick={handleAssignAttributeReferenceClick}
-        referencePages={searchPagesOpts.data?.search.edges.map(
-          edge => edge.node
-        )}
-        referenceProducts={searchProductsOpts.data?.search.edges.map(
-          edge => edge.node
-        )}
-        fetchReferencePages={searchPages}
-        fetchMoreReferencePages={fetchMoreReferencePages}
-        fetchReferenceProducts={searchProducts}
-        fetchMoreReferenceProducts={fetchMoreReferenceProducts}
-        onCloseDialog={() => navigate(pageUrl(id))}
-      />
+      <TypedListCarousel>
+        {data => {
+          const dataCarousel =
+            data &&
+            data.data?.pages?.edges?.reduce((acc, key) => {
+              if (key.node.id !== id) {
+                return acc;
+              }
+              const listImage = key.node.media.map(item => ({
+                ...item,
+                url: `http://thachsanh.store:8080/media/${item.image}`
+              }));
+
+              return [...acc, ...listImage];
+            }, []);
+
+          return (
+            <PageDetailsPage
+              loading={
+                pageDetails.loading ||
+                pageUpdateOpts.loading ||
+                uploadFileOpts.loading ||
+                deleteAttributeValueOpts.loading
+              }
+              errors={pageUpdateOpts.data?.pageUpdate.errors || []}
+              saveButtonBarState={pageUpdateOpts.status}
+              page={pageDetails.data?.page}
+              onBack={() => navigate(pageListUrl())}
+              onRemove={() =>
+                navigate(
+                  pageUrl(id, {
+                    action: "remove"
+                  })
+                )
+              }
+              onSubmit={handleSubmit}
+              assignReferencesAttributeId={
+                params.action === "assign-attribute-value" && params.id
+              }
+              onAssignReferencesClick={handleAssignAttributeReferenceClick}
+              referencePages={searchPagesOpts.data?.search.edges.map(
+                edge => edge.node
+              )}
+              referenceProducts={searchProductsOpts.data?.search.edges.map(
+                edge => edge.node
+              )}
+              fetchReferencePages={searchPages}
+              fetchMoreReferencePages={fetchMoreReferencePages}
+              fetchReferenceProducts={searchProducts}
+              fetchMoreReferenceProducts={fetchMoreReferenceProducts}
+              onCloseDialog={() => navigate(pageUrl(id))}
+              placeholderImage={placeholderImg}
+              carousel={dataCarousel}
+              onImageUpload={handleImageUpload}
+              onImageDelete={handleImageDelete}
+            />
+          );
+        }}
+      </TypedListCarousel>
       <ActionDialog
         open={params.action === "remove"}
         confirmButtonState={pageRemoveOpts.status}
