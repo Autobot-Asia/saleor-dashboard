@@ -48,7 +48,9 @@ export interface PageCarouselDelete {
 }
 
 export interface PageCarouselDeleteVariables {
-  id: string;
+  mediaId: string;
+  isActive:boolean;
+  alt:string
 }
 
 export interface ListCarouselRes{

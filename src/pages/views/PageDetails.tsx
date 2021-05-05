@@ -223,8 +223,11 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
         text: intl.formatMessage(commonMessages.savedChanges)
       })
   });
-  const handleImageDelete = (id: string) => () =>
-    deletePageCarouselImage({ variables: { id } });
+  const handleImageDelete = (id: string) => () => {
+    deletePageCarouselImage({
+      variables: { mediaId: id, isActive: false, alt: "" }
+    });
+  };
 
   return (
     <>
