@@ -1,6 +1,6 @@
 //@ts-ignore
 import { PageErrorCode } from "@saleor/types/globalTypes";
-import { PageDetails_page } from "./PageDetails";
+
 
 export interface PageCarouselCreate_pageCarouselCreate_errors {
     __typename: "ProductError";
@@ -9,12 +9,15 @@ export interface PageCarouselCreate_pageCarouselCreate_errors {
   }
 
 export interface PageCarouselCreate_pageCarouselCreate {
-  __typename: "PageCarouselCreate";
-  errors: PageCarouselCreate_pageCarouselCreate_errors[];
-  carousel: PageDetails_page | null;
+  __typename: "PageMediaCreate"
+  pageErrors: PageCarouselCreate_pageCarouselCreate_errors[];
+  page: {
+    id:string
+    __typename:"Page"
+  } | null;
 }
 export interface PageCarouselCreate {
-    pageCarouselCreate: PageCarouselCreate_pageCarouselCreate | null;
+    pageMediaCreate: PageCarouselCreate_pageCarouselCreate | null;
 }
 
 export interface PageCarouselVariables {
@@ -48,7 +51,9 @@ export interface PageCarouselDelete {
 }
 
 export interface PageCarouselDeleteVariables {
-  id: string;
+  mediaId: string;
+  isActive:boolean;
+  alt:string
 }
 
 export interface ListCarouselRes{

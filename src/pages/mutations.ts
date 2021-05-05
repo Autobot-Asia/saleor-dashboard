@@ -47,17 +47,11 @@ export const usePageCarouselCreateMutation = makeMutation<
 >(pageCarouselCreateMutation);
 
 export const pageCarouselDeleteMutation = gql`
-  ${pageErrorFragment}
-  mutation PageCarouselDelete($id: ID!) {
-    pageCarouselDelete(id: $id) {
-      errors: pageErrors {
-        ...pageErrorFragment
-      }
-      carousel {
-        id
-        media {
-          id
-        }
+  mutation updatePageMedia($mediaId: ID!, $isActive: Boolean, $alt: String) {
+    pageMediaUpdate(id: $mediaId, input: { isActive: $isActive, alt: $alt }) {
+      media {
+        isActive
+        alt
       }
     }
   }
@@ -158,6 +152,7 @@ const getListCarousel = gql`
         node {
           id
           media {
+            isActive
             id
             image
           }

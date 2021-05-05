@@ -134,11 +134,6 @@ const CarouselListContainer = SortableContainer<CarouselListContainerProps>(
           onDelete={onDelete(carouselObj.id)}
         />
       ))}
-      {preview
-        .sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1))
-        .map((carouselObj, index) => (
-          <CarouselTile loading={true} carousel={carouselObj} key={index} />
-        ))}
     </div>
   )
 );

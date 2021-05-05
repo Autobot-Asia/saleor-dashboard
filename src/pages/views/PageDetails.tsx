@@ -78,6 +78,8 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
   const notify = useNotifier();
   const intl = useIntl();
   const [updateMetadata] = useMetadataUpdate({});
+
+  const [rerender, setRerender] = React.useState(false);
   const [updatePrivateMetadata] = usePrivateMetadataUpdate({});
 
   const pageDetails = usePageDetailsQuery({
@@ -192,6 +194,7 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
     id: string,
     createCarouselImage: (variables: PageCarouselVariables) => void
   ) => (file: File) => {
+    setRerender(true);
     createCarouselImage({
       alt: "",
       image: file,
@@ -201,13 +204,16 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
 
   const [createCarouselImage] = usePageCarouselCreateMutation({
     onCompleted: data => {
-      const imageError = data.pageCarouselCreate.errors.find(
-        error => error.field === ("image" as keyof PageCarouselVariables)
-      );
+      const imageError = data.pageMediaCreate.pageErrors.length > 0;
       if (imageError) {
         notify({
           status: "error",
           text: intl.formatMessage(commonMessages.somethingWentWrong)
+        });
+      } else {
+        notify({
+          status: "success",
+          text: intl.formatMessage(commonMessages.savedChanges)
         });
       }
     }
@@ -223,17 +229,25 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
         text: intl.formatMessage(commonMessages.savedChanges)
       })
   });
-  const handleImageDelete = (id: string) => () =>
-    deletePageCarouselImage({ variables: { id } });
+  const handleImageDelete = (id: string) => () => {
+    setRerender(true);
+    deletePageCarouselImage({
+      variables: { mediaId: id, isActive: false, alt: "" }
+    });
+  };
 
   return (
     <>
       <WindowTitle title={maybe(() => pageDetails.data.page.title)} />
-      <TypedListCarousel>
-        {data => {
+      <TypedListCarousel displayLoader={false}>
+        {({ data, refetch }) => {
+          if (rerender) {
+            refetch();
+            setRerender(false);
+          }
           const dataCarousel =
             data &&
-            data.data?.pages?.edges?.reduce((acc, key) => {
+            data.pages?.edges?.reduce((acc, key) => {
               if (key.node.id !== id) {
                 return acc;
               }
