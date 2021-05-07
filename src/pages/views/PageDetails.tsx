@@ -190,16 +190,29 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
     onFetchMore: loadMoreProducts
   };
 
+  let countImage: number = 0;
+  const [prevLength, setPrevLength] = React.useState<number>();
+
   const createImageUploadHandler = (
     id: string,
     createCarouselImage: (variables: PageCarouselVariables) => void
   ) => (file: File) => {
+    countImage++;
+    if (countImage <= 5) {
+      createCarouselImage({
+        alt: "",
+        image: file,
+        page: id
+      });
+    } else {
+      notify({
+        status: "error",
+        text: intl.formatMessage({
+          defaultMessage: "You can upload maximum 5 images!"
+        })
+      });
+    }
     setRerender(true);
-    createCarouselImage({
-      alt: "",
-      image: file,
-      page: id
-    });
   };
 
   const [createCarouselImage] = usePageCarouselCreateMutation({
@@ -258,6 +271,14 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
 
               return [...acc, ...listImage];
             }, []);
+
+          if (
+            dataCarousel &&
+            (countImage === 0 || dataCarousel.length !== prevLength)
+          ) {
+            setPrevLength(dataCarousel.length);
+            countImage = dataCarousel.length;
+          }
 
           return (
             <PageDetailsPage
