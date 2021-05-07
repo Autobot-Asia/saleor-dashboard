@@ -57,9 +57,11 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
   const { isSelected, listElements, reset, toggle, toggleAll } = useBulkActions(
     params.ids
   );
+
   const { updateListSettings, settings } = useListSettings(
     ListViews.CUSTOMER_LIST
   );
+
   const intl = useIntl();
 
   const paginationState = createPaginationState(settings.rowNumber, params);
@@ -72,7 +74,7 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
     [params]
   );
   const { data, loading, refetch } = useCustomerListQuery({
-    displayLoader: true,
+    displayLoader: false,
     variables: queryVariables
   });
 
