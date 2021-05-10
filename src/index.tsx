@@ -58,6 +58,7 @@ import errorTracker from "./services/errorTracking";
 import ShippingSection from "./shipping";
 import SiteSettingsSection from "./siteSettings";
 import StaffSection from "./staff";
+import { StoreSection } from "./storesManagement";
 import TaxesSection from "./taxes";
 import TranslationsSection from "./translations";
 import { PermissionEnum } from "./types/globalTypes";
@@ -176,6 +177,11 @@ const Routes: React.FC = () => {
           >
             <Switch>
               <SectionRoute exact path="/" component={HomePage} />
+              <SectionRoute
+                exact
+                path="/storesManagement"
+                component={StoreSection}
+              />
               <SectionRoute
                 permissions={[PermissionEnum.MANAGE_PRODUCTS]}
                 path="/categories"

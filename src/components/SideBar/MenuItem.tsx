@@ -42,7 +42,10 @@ const useStyles = makeStyles(
       fontSize: 16,
       fontWeight: "bold",
       opacity: 1,
-      transition: theme.transitions.duration.shortest + "ms"
+      transition: theme.transitions.duration.shortest + "ms",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
     },
     menuItemBtn: {
       "&:focus": {

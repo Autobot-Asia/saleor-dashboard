@@ -31,6 +31,9 @@ export const commonMessages = defineMessages({
   discounts: {
     defaultMessage: "Discounts"
   },
+  storesManagement: {
+    defaultMessage: "Stores Management"
+  },
   drafts: {
     defaultMessage: "Drafts"
   },
@@ -189,6 +192,10 @@ export const sectionNames = defineMessages({
   },
   attributes: {
     defaultMessage: "Attributes",
+    description: "attributes section name"
+  },
+  storesManagement: {
+    defaultMessage: "Stores Management",
     description: "attributes section name"
   },
   categories: {

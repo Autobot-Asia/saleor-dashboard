@@ -6,6 +6,7 @@ import homeIcon from "@assets/images/menu-home-icon.svg";
 import ordersIcon from "@assets/images/menu-orders-icon.svg";
 import translationIcon from "@assets/images/menu-translation-icon.svg";
 import { commonMessages, sectionNames } from "@saleor/intl";
+import { storesManagementListUrl } from "@saleor/storesManagement/urls";
 import { IntlShape } from "react-intl";
 
 import { appsListPath } from "../../apps/urls";
@@ -15,6 +16,7 @@ import { customerListUrl } from "../../customers/urls";
 import { saleListUrl, voucherListUrl } from "../../discounts/urls";
 import { orderDraftListUrl, orderListUrl } from "../../orders/urls";
 import { productListUrl } from "../../products/urls";
+// import { storeManagementUrl } from "../../storesManagement/urls";
 import { languageListUrl } from "../../translations/urls";
 import { PermissionEnum } from "../../types/globalTypes";
 
@@ -36,6 +38,13 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
       label: intl.formatMessage(sectionNames.home),
       testingContextId: "home",
       url: "/"
+    },
+    {
+      ariaLabel: "storesManagement",
+      icon: homeIcon,
+      label: intl.formatMessage(sectionNames.storesManagement),
+      testingContextId: "storesManagement",
+      url: storesManagementListUrl()
     },
     {
       ariaLabel: "catalogue",
