@@ -9,17 +9,15 @@ export const storesList = gql`
     $before: String
     $first: Int
     $last: Int
-    $filter: StoreFilterInput
-  ) # $channel: String
-  {
+    $filter: StoreFilterInput # $channel: String
+  ) {
     stores(
       after: $after
       before: $before
       first: $first
       last: $last
-      filter: $filter
-    ) #   channel: $channel
-    {
+      filter: $filter #   channel: $channel
+    ) {
       edges {
         node {
           id

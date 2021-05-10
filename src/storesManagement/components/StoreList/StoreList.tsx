@@ -58,7 +58,7 @@ const StoreList: React.FC<StoreListProps> = props => {
     onNextPage,
     onPreviousPage,
     onUpdateListSettings,
-    onRowClick,
+    // onRowClick,
     onSort,
     toolbar,
     toggle,
@@ -69,6 +69,14 @@ const StoreList: React.FC<StoreListProps> = props => {
   } = props;
 
   const classes = useStyles(props);
+
+  const formatDate = (date: Date) => {
+    if (!date) {
+      return;
+    }
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString();
+  };
 
   return (
     <ResponsiveTable>
@@ -154,7 +162,7 @@ const StoreList: React.FC<StoreListProps> = props => {
                 hover={!!store}
                 key={store ? store.id : "skeleton"}
                 selected={isSelected}
-                onClick={store ? onRowClick(store.id) : undefined}
+                // onClick={store ? onRowClick(store.id) : undefined}
               >
                 <TableCell padding="checkbox">
                   <Checkbox
@@ -179,7 +187,7 @@ const StoreList: React.FC<StoreListProps> = props => {
                   )} */}
                 </TableCell>
                 <TableCell className={classes.colOrders}>
-                  {store && store.dateJoined}
+                  {store && formatDate(store.dateJoined)}
                 </TableCell>
               </TableRow>
             );

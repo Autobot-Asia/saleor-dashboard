@@ -18,7 +18,7 @@ import {
 } from "./types/CustomerDetails";
 import { ListCustomers, ListCustomersVariables } from "./types/ListCustomers";
 
-const customerList = gql`
+export const customerList = gql`
   ${customerFragment}
   query ListCustomers(
     $after: String
