@@ -8,7 +8,7 @@ import {
   TabActionDialog
 } from "@saleor/types";
 import { stringifyQs } from "@saleor/utils/urls";
-import urljoin from "url-join";
+import urlJoin from "url-join";
 
 export const storeSection = "/storesManagement/";
 
@@ -43,8 +43,16 @@ export type StoreListUrlSort = Sort<StoreListUrlSortField>;
 
 export type StoreListUrlFilters = Filters<StoreListUrlFiltersEnum>;
 
+export const storePath = (id: string) => urlJoin(storeSection, id);
+export type StoreUrlDialog = "remove";
+export type StoreUrlQueryParams = Dialog<StoreUrlDialog>;
+export const storeUrl = (id: string, params?: StoreUrlQueryParams) =>
+  storePath(encodeURIComponent(id)) + "?" + stringifyQs(params);
+
 export const storesManagementListUrl = (params?: any) =>
   storeListPath + "?" + stringifyQs(params);
 
-export const storeAddPath = urljoin(storeSection, "add");
+export const storeDetailPath = (id: string) => urlJoin(storePath(id), "detail");
+
+export const storeAddPath = urlJoin(storeSection, "add");
 export const storeAddUrl = storeAddPath;

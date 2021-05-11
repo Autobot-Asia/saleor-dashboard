@@ -39,6 +39,42 @@ export const storesList = gql`
   }
 `;
 
+// export const UpdateStore = gql``;
+
 export const useStoreListQuery = makeQuery<ListStores, ListStoresVariables>(
   storesList
 );
+
+export const storeForUser = gql`
+  query stores($id: ID!) {
+    store(id: $id) {
+      name
+      description
+      phone
+      acreage
+      latlong
+      storeType {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export interface IStoreForUser {
+  store: {
+    name: string;
+    description?: string;
+    storeType: {
+      id: string;
+      name: string;
+    };
+    phone?: string;
+    acreage?: number;
+    latlong?: string;
+    backgroundImage?: string;
+    backgroundImageAlt?: string;
+  };
+}
+
+export const useStoreById = makeQuery<IStoreForUser, {}>(storeForUser);

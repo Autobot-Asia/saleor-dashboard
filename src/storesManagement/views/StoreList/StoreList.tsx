@@ -1,6 +1,5 @@
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { customerUrl } from "@saleor/customers/urls";
 import useBulkActions from "@saleor/hooks/useBulkActions";
 import useListSettings from "@saleor/hooks/useListSettings";
 import useNavigator from "@saleor/hooks/useNavigator";
@@ -13,7 +12,8 @@ import {
   storeAddUrl,
   StoreListUrlQueryParams,
   StoresListUrlDialog,
-  storesManagementListUrl
+  storesManagementListUrl,
+  storeUrl
 } from "@saleor/storesManagement/urls";
 import { ListViews } from "@saleor/types";
 import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandlers";
@@ -123,7 +123,7 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
         onNextPage={loadNextPage}
         onPreviousPage={loadPreviousPage}
         onUpdateListSettings={updateListSettings}
-        onRowClick={id => () => navigate(customerUrl(id))}
+        onRowClick={id => () => navigate(storeUrl(id))}
         onSort={handleSort}
         toolbar={
           <IconButton
