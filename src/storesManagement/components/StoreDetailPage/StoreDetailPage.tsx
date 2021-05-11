@@ -68,11 +68,11 @@ const StoreDetailPage: React.FC<IProps> = ({
     >
       <Container>
         <AppHeader onBack={onBack}>
-          {intl.formatMessage(sectionNames.configuration)}
+          {intl.formatMessage(sectionNames.listStore)}
         </AppHeader>
-        <PageHeader
+        {/* <PageHeader
           title={intl.formatMessage(commonMessages.storesManagement)}
-        />
+        /> */}
         <StoreInput
           header={intl.formatMessage({
             defaultMessage: "Store Information",
@@ -82,7 +82,7 @@ const StoreDetailPage: React.FC<IProps> = ({
 
         <SaveButtonBar
           state={saveButtonBarState}
-          disabled={disabled} // || !hasChanged
+          disabled={disabled}
           onCancel={onBack}
           onSave={onSubmit}
         />

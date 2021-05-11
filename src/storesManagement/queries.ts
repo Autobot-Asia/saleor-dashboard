@@ -22,9 +22,6 @@ export const storesList = gql`
         node {
           id
           name
-          description
-          latlong
-          acreage
           userName
           dateJoined
         }

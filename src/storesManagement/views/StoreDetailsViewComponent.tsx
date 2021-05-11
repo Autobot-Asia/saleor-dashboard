@@ -1,12 +1,11 @@
 import { WindowTitle } from "@saleor/components/WindowTitle";
-import { configurationMenuUrl } from "@saleor/configuration";
 import useNavigator from "@saleor/hooks/useNavigator";
 // import { maybe } from "@saleor/misc";
 import React from "react";
 
 import StoreDetailPage from "../components/StoreDetailPage/StoreDetailPage";
 import { useStoreById } from "../queries";
-import { StoreUrlQueryParams } from "../urls";
+import { storesManagementSection, StoreUrlQueryParams } from "../urls";
 interface IProps {
   id: string;
   params: StoreUrlQueryParams;
@@ -28,7 +27,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
         disabled={loading}
         storeId={id}
         initialValues={data}
-        onBack={() => navigate(configurationMenuUrl)}
+        onBack={() => navigate(storesManagementSection)}
         // onSubmit={()=>{}}
         // saveButtonBarState={updateShopSettingsOpts.status}
       />
