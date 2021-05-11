@@ -7,9 +7,16 @@ import { useIntl } from "react-intl";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 
 import { WindowTitle } from "../components/WindowTitle";
-import { storeAddPath, storeListPath } from "./urls";
+import {
+  storeAddPath,
+  storeListPath,
+  storePath,
+  StoreUrlQueryParams
+} from "./urls";
 import StoreCreateView from "./views/StoreCreate";
+import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
 import StoreListViewComponent from "./views/StoreList";
+
 const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
   const qs = parseQs(location.search.substr(1));
   const params: any = asSortParams(qs, CustomerListUrlSortField);
@@ -25,6 +32,21 @@ const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
 // };
 
 // import HomePage from "./views";
+interface StoreDetailsRouteParams {
+  id: string;
+}
+const DetailStoreView: React.FC<RouteComponentProps<
+  StoreDetailsRouteParams
+>> = ({ location, match }) => {
+  const qs = parseQs(location.search.substr(1));
+  const params: StoreUrlQueryParams = qs;
+  return (
+    <StoreDetailsViewComponent
+      id={decodeURIComponent(match.params.id)}
+      params={params}
+    />
+  );
+};
 
 export const StoreSection: React.FC<{}> = () => {
   const intl = useIntl();
@@ -33,15 +55,9 @@ export const StoreSection: React.FC<{}> = () => {
     <>
       <WindowTitle title={intl.formatMessage(sectionNames.storesManagement)} />
       <Switch>
-        {/* <Route exact path={customerListPath} component={CustomerListView} />
-        <Route exact path={customerAddPath} component={CustomerCreateView} />
-        <Route
-          path={customerAddressesPath(":id")}
-          component={CustomerAddressesView}
-        />
-        <Route path={customerPath(":id")} component={CustomerDetailsView} /> */}
         <Route exact path={storeListPath} component={StoreListView} />
-        <Route exact path={storeAddPath} component={StoreCreateView} />
+        <Route path={storeAddPath} component={StoreCreateView} />
+        <Route path={storePath(":id")} component={DetailStoreView} />
       </Switch>
     </>
   );

@@ -58,7 +58,7 @@ const StoreList: React.FC<StoreListProps> = props => {
     onNextPage,
     onPreviousPage,
     onUpdateListSettings,
-    // onRowClick,
+    onRowClick,
     onSort,
     toolbar,
     toggle,
@@ -67,7 +67,6 @@ const StoreList: React.FC<StoreListProps> = props => {
     sort,
     isChecked
   } = props;
-
   const classes = useStyles(props);
 
   const formatDate = (date: Date) => {
@@ -156,13 +155,14 @@ const StoreList: React.FC<StoreListProps> = props => {
           stores,
           store => {
             const isSelected = store ? isChecked(store.id) : false;
+
             return (
               <TableRow
                 className={!!store ? classes.tableRow : undefined}
                 hover={!!store}
                 key={store ? store.id : "skeleton"}
                 selected={isSelected}
-                // onClick={store ? onRowClick(store.id) : undefined}
+                onClick={store ? onRowClick(store.id) : undefined}
               >
                 <TableCell padding="checkbox">
                   <Checkbox

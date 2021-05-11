@@ -177,11 +177,7 @@ const Routes: React.FC = () => {
           >
             <Switch>
               <SectionRoute exact path="/" component={HomePage} />
-              <SectionRoute
-                exact
-                path="/storesManagement"
-                component={StoreSection}
-              />
+              <SectionRoute path="/storesManagement" component={StoreSection} />
               <SectionRoute
                 permissions={[PermissionEnum.MANAGE_PRODUCTS]}
                 path="/categories"
