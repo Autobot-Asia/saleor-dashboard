@@ -11,7 +11,6 @@ import { CustomerListUrlSortField } from "@saleor/customers/urls";
 import { renderCollection } from "@saleor/misc";
 import { makeStyles } from "@saleor/theme";
 import { ListActions, ListProps, SortPage } from "@saleor/types";
-import { getArrowDirection } from "@saleor/utils/sort";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -59,12 +58,10 @@ const StoreList: React.FC<StoreListProps> = props => {
     onPreviousPage,
     onUpdateListSettings,
     onRowClick,
-    onSort,
     toolbar,
     toggle,
     toggleAll,
     selected,
-    sort,
     isChecked
   } = props;
   const classes = useStyles(props);
@@ -87,51 +84,16 @@ const StoreList: React.FC<StoreListProps> = props => {
         toggleAll={toggleAll}
         toolbar={toolbar}
       >
-        <TableCellHeader
-          direction={
-            sort.sort === CustomerListUrlSortField.name
-              ? getArrowDirection(sort.asc)
-              : undefined
-          }
-          arrowPosition="right"
-          onClick={() => onSort(CustomerListUrlSortField.name)}
-          className={classes.colName}
-        >
+        <TableCellHeader arrowPosition="right" className={classes.colName}>
           <FormattedMessage defaultMessage="Store Name" />
         </TableCellHeader>
-        <TableCellHeader
-          direction={
-            sort.sort === CustomerListUrlSortField.name
-              ? getArrowDirection(sort.asc)
-              : undefined
-          }
-          arrowPosition="right"
-          onClick={() => onSort(CustomerListUrlSortField.name)}
-          className={classes.colName}
-        >
+        <TableCellHeader arrowPosition="right" className={classes.colName}>
           <FormattedMessage defaultMessage="Owner" />
         </TableCellHeader>
-        <TableCellHeader
-          direction={
-            sort.sort === CustomerListUrlSortField.email
-              ? getArrowDirection(sort.asc)
-              : undefined
-          }
-          onClick={() => onSort(CustomerListUrlSortField.email)}
-          className={classes.colEmail}
-        >
+        <TableCellHeader className={classes.colEmail}>
           <FormattedMessage defaultMessage="Address" />
         </TableCellHeader>
-        <TableCellHeader
-          direction={
-            sort.sort === CustomerListUrlSortField.orders
-              ? getArrowDirection(sort.asc)
-              : undefined
-          }
-          textAlign="center"
-          onClick={() => onSort(CustomerListUrlSortField.orders)}
-          className={classes.colOrders}
-        >
+        <TableCellHeader textAlign="center" className={classes.colOrders}>
           <FormattedMessage defaultMessage="Joined date" />
         </TableCellHeader>
       </TableHead>

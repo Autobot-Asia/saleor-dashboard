@@ -56,8 +56,8 @@ export const StoreSection: React.FC<{}> = () => {
       <WindowTitle title={intl.formatMessage(sectionNames.storesManagement)} />
       <Switch>
         <Route exact path={storeListPath} component={StoreListView} />
-        <Route path={storeAddPath} component={StoreCreateView} />
-        <Route path={storePath(":id")} component={DetailStoreView} />
+        <Route exact path={storeAddPath} component={StoreCreateView} />
+        <Route exact path={storePath(":id")} component={DetailStoreView} />
       </Switch>
     </>
   );
