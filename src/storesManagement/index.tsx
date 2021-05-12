@@ -14,6 +14,7 @@ import {
   StoreUrlQueryParams
 } from "./urls";
 import StoreCreateView from "./views/StoreCreate";
+// import StoreDetailInfomation from "./views/StoreDetailInfomation";
 import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
 import StoreListViewComponent from "./views/StoreList";
 
@@ -45,6 +46,11 @@ const DetailStoreView: React.FC<RouteComponentProps<
       id={decodeURIComponent(match.params.id)}
       params={params}
     />
+    // store detail info
+    // <StoreDetailInfomation
+    //   id={decodeURIComponent(match.params.id)}
+    //   params={params}
+    // />
   );
 };
 
