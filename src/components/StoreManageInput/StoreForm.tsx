@@ -1,11 +1,4 @@
-import {
-  CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField
-} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import Grid from "@saleor/components/Grid";
 import { FormChange } from "@saleor/hooks/useForm";
 import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";

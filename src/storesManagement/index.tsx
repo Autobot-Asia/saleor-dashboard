@@ -13,7 +13,6 @@ import {
   storePath,
   StoreUrlQueryParams
 } from "./urls";
-import StoreCreateView from "./views/StoreCreate";
 import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
 import StoreListViewComponent from "./views/StoreList";
 
