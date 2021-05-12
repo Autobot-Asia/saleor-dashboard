@@ -12,6 +12,8 @@ import StoreDetail from "./StoreDetail";
 
 interface IProps {
   header?: string;
+  storeId: string;
+  store: any;
 }
 
 const useStyles = makeStyles({
@@ -23,7 +25,7 @@ const useStyles = makeStyles({
   }
 });
 
-const StoreInfomation: React.FC<IProps> = () => {
+const StoreInfomation: React.FC<IProps> = ({ store }) => {
   const classes = useStyles();
   return (
     <Card>
@@ -46,7 +48,7 @@ const StoreInfomation: React.FC<IProps> = () => {
         </div>
       </CardActions>
       <CardContent>
-        <StoreDetail />
+        <StoreDetail store={store} />
       </CardContent>
     </Card>
   );

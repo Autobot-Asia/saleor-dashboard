@@ -13,7 +13,11 @@ interface IProps {
   initialValues: any;
 }
 
-const StoreDetailInfomationPage: React.FC<IProps> = ({ onBack }) => {
+const StoreDetailInfomationPage: React.FC<IProps> = ({
+  onBack,
+  storeId,
+  initialValues
+}) => {
   const intl = useIntl();
   return (
     <Container>
@@ -21,7 +25,7 @@ const StoreDetailInfomationPage: React.FC<IProps> = ({ onBack }) => {
         {intl.formatMessage(sectionNames.configuration)}
       </AppHeader>
       <PageHeader title={intl.formatMessage(commonMessages.storesManagement)} />
-      <StoreInfomation />
+      <StoreInfomation storeId={storeId} store={initialValues} />
     </Container>
   );
 };
