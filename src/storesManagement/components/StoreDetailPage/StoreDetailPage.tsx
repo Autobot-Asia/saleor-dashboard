@@ -68,7 +68,12 @@ const StoreDetailPage: React.FC<IProps> = ({
         latlong: initialValues.store.latlong
       }
     : {
-        name: ""
+        name: "",
+        description: "",
+        storeType: "",
+        phone: "",
+        acreage: 0,
+        latlong: ""
       };
 
   return (

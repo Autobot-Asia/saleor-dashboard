@@ -1,3 +1,4 @@
+import makeMutation from "@saleor/hooks/makeMutation";
 import makeQuery from "@saleor/hooks/makeQuery";
 import gql from "graphql-tag";
 
@@ -37,6 +38,55 @@ export const storesList = gql`
 `;
 
 // export const UpdateStore = gql``;
+const storeUpdateMutation = gql`
+  mutation storeUpdate(
+    $id: ID!
+    $storeTypeId: ID!
+    $name: String
+    $description: JSONString
+    $phone: String
+    $acreage: Float
+    $latlong: String
+    $backgroundImage: Upload
+    $backgroundImageAlt: String
+  ) {
+    storeUpdate(
+      id: $id
+      input: {
+        name: $name
+        description: $description
+        storeType: $storeTypeId
+        phone: $phone
+        acreage: $acreage
+        latlong: $latlong
+        backgroundImage: $backgroundImage
+        backgroundImageAlt: $backgroundImageAlt
+      }
+    ) {
+      store {
+        id
+        name
+        description
+        phone
+        latlong
+        backgroundImage {
+          alt
+        }
+      }
+      storeErrors {
+        message
+        field
+      }
+    }
+  }
+`;
+
+// update store
+export const useUpdateStoreMutation = makeMutation<
+  UpdateStore,
+  UpdateStoreVariables
+>(storeUpdateMutation);
+//
 
 export const useStoreListQuery = makeQuery<ListStores, ListStoresVariables>(
   storesList
@@ -76,7 +126,6 @@ export interface IStoreForUser {
 
 export const useStoreById = makeQuery<IStoreForUser, {}>(storeForUser);
 
-
 export const storeTypeQuery = gql`
   query stores {
     storeTypes(first: 10) {
@@ -90,9 +139,7 @@ export const storeTypeQuery = gql`
   }
 `;
 
-export const useListStoreTypeQuery = makeQuery<IStoreType, {}>(
-  storeTypeQuery
-);
+export const useListStoreTypeQuery = makeQuery<IStoreType, {}>(storeTypeQuery);
 
 export interface IStoreType {
   storeTypes: StoreType | null;
@@ -112,4 +159,59 @@ export interface StoreType_edges_node {
   __typename: "StoreType";
   id: string;
   name: string;
+}
+
+export interface UpdateStore_storeUpdate {
+  __typename: "StoreUpdate";
+  /**
+   * List of errors that occurred executing the mutation.
+   */
+  StoreErrors: UpdateStore_storeUpdate_errors[];
+  /**
+   * Informs whether users need to confirm their email address.
+   */
+  requiresConfirmation: boolean | null;
+  store: StoreResponse;
+}
+
+export interface StoreResponse {
+  backgroundImage: { alt: string; __typename: "Image" };
+  description: string;
+  id: string;
+  latlong: string;
+  name: string;
+  phone: string;
+  __typename: "Store";
+}
+
+export interface UpdateStore {
+  /**
+   * Register a new user.
+   */
+  storeUpdate: UpdateStore_storeUpdate | null;
+}
+
+export interface UpdateStore_storeUpdate_errors {
+  __typename: "StoreError";
+  /**
+   * Name of a field that caused the error. A value of `null` indicates that the
+   * error isn't associated with a particular field.
+   */
+  field: string | null;
+  /**
+   * The error message.
+   */
+  message: string | null;
+}
+
+export interface UpdateStoreVariables {
+  name: string;
+  id: string;
+  description?: string;
+  storeTypeId: string;
+  phone?: string;
+  acreage?: number;
+  latlong?: string;
+  backgroundImage?: string;
+  backgroundImageAlt?: string;
 }

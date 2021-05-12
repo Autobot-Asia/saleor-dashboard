@@ -9,6 +9,7 @@ import {
 import Grid from "@saleor/components/Grid";
 import { FormChange } from "@saleor/hooks/useForm";
 import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
+import { useListStoreTypeQuery } from "@saleor/storesManagement/queries";
 import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const StoreFom: React.FC<Props> = ({ data, change }) => {
+  
   const intl = useIntl();
   const position = {
     lat: 0,
@@ -35,6 +37,14 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
       <Marker position={position} />
     </GoogleMap>
   );
+
+  const { data:dataType } = useListStoreTypeQuery({
+    displayLoader: true,
+    variables: {}
+  });
+
+  console.log(dataType,"======data");
+
 
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
@@ -129,7 +139,9 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Store Description"
         })}
         fullWidth
+        value={JSON.parse(data.description).description}
         name="description"
+        
         // onChange={change}
       />
       <FormSpacer />
@@ -141,7 +153,7 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
-          //   value={age}
+          value={data.storeType}
           //   onChange={handleChange}
           name="storeType"
         >
@@ -159,8 +171,9 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Phone"
         })}
         fullWidth
-        name="description"
-        // onChange={change}
+        name="phone"
+        onChange={change}
+        value={data.phone}
       />
       <FormSpacer />
       <TextField
@@ -168,8 +181,9 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Store Acreage"
         })}
         fullWidth
-        name="description"
-        // onChange={change}
+        name="acreage"
+        value={data.acreage}
+        onChange={change}
       />
       <FormSpacer />
       <WrappedMap
