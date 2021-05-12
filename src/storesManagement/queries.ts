@@ -75,3 +75,41 @@ export interface IStoreForUser {
 }
 
 export const useStoreById = makeQuery<IStoreForUser, {}>(storeForUser);
+
+
+export const storeTypeQuery = gql`
+  query stores {
+    storeTypes(first: 10) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const useListStoreTypeQuery = makeQuery<IStoreType, {}>(
+  storeTypeQuery
+);
+
+export interface IStoreType {
+  storeTypes: StoreType | null;
+}
+
+export interface StoreType {
+  __typename: "StoreTypeCountableConnection";
+  edges: StoreTypeList_edges[];
+}
+
+export interface StoreTypeList_edges {
+  __typename: "CategoryCountableEdge";
+  node: StoreType_edges_node;
+}
+
+export interface StoreType_edges_node {
+  __typename: "StoreType";
+  id: string;
+  name: string;
+}

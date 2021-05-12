@@ -1,4 +1,5 @@
 import {
+  CardContent,
   FormControl,
   InputLabel,
   MenuItem,
@@ -6,14 +7,20 @@ import {
   TextField
 } from "@material-ui/core";
 import Grid from "@saleor/components/Grid";
+import { FormChange } from "@saleor/hooks/useForm";
+import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
 import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
 
 import FormSpacer from "../FormSpacer";
+interface Props {
+  data: Partial<StoreDetailVariables>;
+  change: FormChange;
+}
 
-const StoreFom = () => {
+const StoreFom: React.FC<Props> = ({ data, change }) => {
   const intl = useIntl();
   const position = {
     lat: 0,
@@ -31,15 +38,17 @@ const StoreFom = () => {
 
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
-    <div>
+    <>
       <TextField
         label={intl.formatMessage({
           defaultMessage: "Store Name"
         })}
         fullWidth
         name="name"
-        // onChange={change}
+        value={data.name}
+        onChange={change}
       />
+
       <FormSpacer />
       <Grid>
         <TextField
@@ -174,7 +183,7 @@ const StoreFom = () => {
         // }}
       />
       <FormSpacer />
-    </div>
+    </>
   );
 };
 
