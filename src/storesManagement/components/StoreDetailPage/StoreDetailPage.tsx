@@ -58,11 +58,17 @@ const StoreDetailPage: React.FC<IProps> = ({
 }) => {
   const intl = useIntl();
 
+  const tempDescription =
+    initialValues?.store.description &&
+    initialValues?.store.description.replace(/'/g, '"');
+
   const initialForm: Partial<StoreDetailVariables> = initialValues?.store
     ? {
         name: initialValues.store.name,
-        description: initialValues.store.description,
-        storeType: initialValues.store.storeType.id,
+        description: tempDescription
+          ? JSON.parse(tempDescription)?.description
+          : "",
+        storeType: initialValues.store.storeType?.id,
         phone: initialValues.store.phone,
         acreage: initialValues.store.acreage,
         latlong: initialValues.store.latlong
@@ -78,29 +84,36 @@ const StoreDetailPage: React.FC<IProps> = ({
 
   return (
     <Form onSubmit={onSubmit} initial={initialForm}>
-      {({ change, data, hasChanged, submit }) => (
-        <Container>
-          <AppHeader onBack={onBack}>
-            {intl.formatMessage(sectionNames.listStore)}
-          </AppHeader>
+      {({ change, data, hasChanged, submit }) => {
+        const disableSubmit =
+          !hasChanged ||
+          disabled ||
+          data.name.length === 0 ||
+          data.storeType.length === 0;
+        return (
+          <Container>
+            <AppHeader onBack={onBack}>
+              {intl.formatMessage(sectionNames.listStore)}
+            </AppHeader>
 
-          <StoreInput
-            header={intl.formatMessage({
-              defaultMessage: "Store Information",
-              description: "section header"
-            })}
-            data={data}
-            change={change}
-          />
+            <StoreInput
+              header={intl.formatMessage({
+                defaultMessage: "Store Information",
+                description: "section header"
+              })}
+              data={data}
+              change={change}
+            />
 
-          <SaveButtonBar
-            state={saveButtonBarState}
-            disabled={!hasChanged || disabled}
-            onCancel={onBack}
-            onSave={submit}
-          />
-        </Container>
-      )}
+            <SaveButtonBar
+              state={saveButtonBarState}
+              disabled={disableSubmit}
+              onCancel={onBack}
+              onSave={submit}
+            />
+          </Container>
+        );
+      }}
     </Form>
   );
 };

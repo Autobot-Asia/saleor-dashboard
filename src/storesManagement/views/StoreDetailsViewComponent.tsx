@@ -1,12 +1,21 @@
 import { WindowTitle } from "@saleor/components/WindowTitle";
 import useNavigator from "@saleor/hooks/useNavigator";
+import useNotifier from "@saleor/hooks/useNotifier";
+import { commonMessages } from "@saleor/intl";
 // import { maybe } from "@saleor/misc";
 import React from "react";
+import { useIntl } from "react-intl";
 
 import StoreDetailPage, {
   StoreDetailVariables
 } from "../components/StoreDetailPage/StoreDetailPage";
-import { useStoreById } from "../queries";
+import {
+  RegisterStoreVariables,
+  UpdateStoreVariables,
+  useCreateStoreMutation,
+  useStoreById,
+  useUpdateStoreMutation
+} from "../queries";
 import { storesManagementSection, StoreUrlQueryParams } from "../urls";
 interface IProps {
   id: string;
@@ -15,6 +24,8 @@ interface IProps {
 
 const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
   const navigate = useNavigator();
+  const notify = useNotifier();
+  const intl = useIntl();
 
   if (id !== "undefined") {
     const { data, loading, refetch } = useStoreById({
@@ -22,8 +33,40 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
       variables: { id }
     });
 
+    const [updateStore] = useUpdateStoreMutation({
+      onCompleted: data => {
+        if (data.storeUpdate.storeErrors.length === 0) {
+          notify({
+            status: "success",
+            text: intl.formatMessage(commonMessages.savedChanges)
+          });
+          navigate(storesManagementSection);
+        } else {
+          notify({
+            status: "error",
+            text: intl.formatMessage({
+              defaultMessage: "Update Fail! Please Try Again!"
+            })
+          });
+        }
+      }
+    });
+
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
-      console.log({ data });
+      const variables: UpdateStoreVariables = {
+        name: data.name,
+        id,
+        storeTypeId: data.storeType,
+        acreage: data.acreage,
+        description: JSON.stringify({
+          description: data.description
+        }),
+        phone: data.phone,
+        latlong: data.latlong
+      };
+      updateStore({
+        variables
+      });
     };
 
     return (
@@ -40,9 +83,41 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
       </>
     );
   } else {
+    const [createStore] = useCreateStoreMutation({
+      onCompleted: data => {
+        if (data.storeCreate.storeErrors.length === 0) {
+          notify({
+            status: "success",
+            text: intl.formatMessage(commonMessages.savedChanges)
+          });
+          navigate(storesManagementSection);
+        } else {
+          notify({
+            status: "error",
+            text: intl.formatMessage({
+              defaultMessage: "Create Fail! Please Try Again!"
+            })
+          });
+        }
+      }
+    });
+
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
-      console.log({ data });
+      const variables: RegisterStoreVariables = {
+        name: data.name,
+        storeTypeId: data.storeType,
+        acreage: data.acreage,
+        description: JSON.stringify({
+          description: data.description
+        }),
+        phone: data.phone,
+        latlong: data.latlong
+      };
+      createStore({
+        variables
+      });
     };
+
     return (
       <>
         <WindowTitle title="Store detail" />

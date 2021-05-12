@@ -88,6 +88,52 @@ export const useUpdateStoreMutation = makeMutation<
 >(storeUpdateMutation);
 //
 
+const storeRegisterMutation = gql`
+  mutation createStore(
+    $storeTypeId: ID!
+    $name: String
+    $description: JSONString
+    $phone: String
+    $acreage: Float
+    $latlong: String
+    $backgroundImage: Upload
+    $backgroundImageAlt: String
+  ) {
+    storeCreate(
+      input: {
+        name: $name
+        description: $description
+        storeType: $storeTypeId
+        phone: $phone
+        acreage: $acreage
+        latlong: $latlong
+        backgroundImage: $backgroundImage
+        backgroundImageAlt: $backgroundImageAlt
+      }
+    ) {
+      store {
+        id
+        name
+        description
+        phone
+        latlong
+        backgroundImage {
+          alt
+        }
+      }
+      storeErrors {
+        message
+        field
+      }
+    }
+  }
+`;
+
+export const useCreateStoreMutation = makeMutation<
+  RegisterStore,
+  RegisterStoreVariables
+>(storeRegisterMutation);
+
 export const useStoreListQuery = makeQuery<ListStores, ListStoresVariables>(
   storesList
 );
@@ -166,7 +212,7 @@ export interface UpdateStore_storeUpdate {
   /**
    * List of errors that occurred executing the mutation.
    */
-  StoreErrors: UpdateStore_storeUpdate_errors[];
+  storeErrors: UpdateStore_storeUpdate_errors[];
   /**
    * Informs whether users need to confirm their email address.
    */
@@ -214,4 +260,31 @@ export interface UpdateStoreVariables {
   latlong?: string;
   backgroundImage?: string;
   backgroundImageAlt?: string;
+}
+
+export interface RegisterStoreVariables {
+  name: string;
+  description?: string;
+  storeTypeId: string;
+  phone?: string;
+  acreage?: number;
+  latlong?: string;
+  backgroundImage?: string;
+  backgroundImageAlt?: string;
+}
+
+export interface RegisterStore {
+  storeCreate: RegisterStore_storeRegister | null;
+}
+
+export interface RegisterStore_storeRegister {
+  __typename: "StoreCreate";
+  storeErrors: RegisterStore_storeRegister_errors[];
+  store: StoreResponse;
+}
+
+export interface RegisterStore_storeRegister_errors {
+  __typename: "Error";
+  field: string | null;
+  message: string | null;
 }

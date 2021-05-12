@@ -16,13 +16,13 @@ import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
 
 import FormSpacer from "../FormSpacer";
+import SingleSelectField, { Choices } from "../SingleSelectField";
 interface Props {
   data: Partial<StoreDetailVariables>;
   change: FormChange;
 }
 
-const StoreFom: React.FC<Props> = ({ data, change }) => {
-  
+const StoreForm: React.FC<Props> = ({ data, change }) => {
   const intl = useIntl();
   const position = {
     lat: 0,
@@ -38,13 +38,16 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
     </GoogleMap>
   );
 
-  const { data:dataType } = useListStoreTypeQuery({
+  const { data: dataType } = useListStoreTypeQuery({
     displayLoader: true,
     variables: {}
   });
 
-  console.log(dataType,"======data");
-
+  const typeOptions: Choices =
+    dataType?.storeTypes?.edges?.map(item => ({
+      value: item.node.id,
+      label: item.node.name
+    })) || [];
 
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
@@ -139,32 +142,22 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Store Description"
         })}
         fullWidth
-        value={JSON.parse(data.description).description}
+        value={data.description}
         name="description"
-        
-        // onChange={change}
+        onChange={change}
       />
       <FormSpacer />
 
-      <FormControl variant="outlined" style={{ width: "100%" }}>
-        <InputLabel id="demo-simple-select-outlined-label">
-          Store Type
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={data.storeType}
-          //   onChange={handleChange}
-          name="storeType"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+      <SingleSelectField
+        choices={typeOptions}
+        name="storeType"
+        value={data.storeType}
+        onChange={change}
+        label={intl.formatMessage({
+          defaultMessage: "Store Type"
+        })}
+      />
+
       <FormSpacer />
       <TextField
         label={intl.formatMessage({
@@ -181,6 +174,7 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Store Acreage"
         })}
         fullWidth
+        type="number"
         name="acreage"
         value={data.acreage}
         onChange={change}
@@ -192,13 +186,13 @@ const StoreFom: React.FC<Props> = ({ data, change }) => {
         loadingElement={<div style={{ width: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        // onChange={(name: any, value: any) => {
-        //   setFieldValue(name, value);
-        // }}
+        onChange={(name: any, value: any) => {
+          change({ target: { name, value } });
+        }}
       />
       <FormSpacer />
     </>
   );
 };
 
-export default StoreFom;
+export default StoreForm;
