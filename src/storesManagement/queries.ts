@@ -44,11 +44,16 @@ const storeUpdateMutation = gql`
     $storeTypeId: ID!
     $name: String
     $description: JSONString
-    $phone: String
+    $phone: String!
     $acreage: Float
     $latlong: String
     $backgroundImage: Upload
     $backgroundImageAlt: String
+    $country: CountryCode
+    $city: String
+    $postalCode: String
+    $streetAddress1: String
+    $streetAddress2: String
   ) {
     storeUpdate(
       id: $id
@@ -61,6 +66,11 @@ const storeUpdateMutation = gql`
         latlong: $latlong
         backgroundImage: $backgroundImage
         backgroundImageAlt: $backgroundImageAlt
+        country: $country
+        city: $city
+        postalCode: $postalCode
+        streetAddress1: $streetAddress1
+        streetAddress2: $streetAddress2
       }
     ) {
       store {
@@ -69,6 +79,12 @@ const storeUpdateMutation = gql`
         description
         phone
         latlong
+        userName
+        country
+        city
+        postalCode
+        streetAddress1
+        streetAddress2
         backgroundImage {
           alt
         }
@@ -93,11 +109,16 @@ const storeRegisterMutation = gql`
     $storeTypeId: ID!
     $name: String
     $description: JSONString
-    $phone: String
+    $phone: String!
     $acreage: Float
     $latlong: String
     $backgroundImage: Upload
     $backgroundImageAlt: String
+    $country: CountryCode
+    $city: String
+    $postalCode: String
+    $streetAddress1: String
+    $streetAddress2: String
   ) {
     storeCreate(
       input: {
@@ -109,6 +130,11 @@ const storeRegisterMutation = gql`
         latlong: $latlong
         backgroundImage: $backgroundImage
         backgroundImageAlt: $backgroundImageAlt
+        country: $country
+        city: $city
+        postalCode: $postalCode
+        streetAddress1: $streetAddress1
+        streetAddress2: $streetAddress2
       }
     ) {
       store {
@@ -117,6 +143,12 @@ const storeRegisterMutation = gql`
         description
         phone
         latlong
+        userName
+        country
+        city
+        postalCode
+        streetAddress1
+        streetAddress2
         backgroundImage {
           alt
         }
@@ -146,6 +178,12 @@ export const storeForUser = gql`
       phone
       acreage
       latlong
+      userName
+      country
+      city
+      postalCode
+      streetAddress1
+      streetAddress2
       storeType {
         id
         name
@@ -156,7 +194,14 @@ export const storeForUser = gql`
 
 export interface IStoreForUser {
   store: {
+    id: string;
     name: string;
+    userName?: string;
+    country?: string;
+    city?: string;
+    postalCode?: string;
+    streetAddress1?: string;
+    streetAddress2?: string;
     description?: string;
     storeType: {
       id: string;
@@ -255,6 +300,11 @@ export interface UpdateStoreVariables {
   id: string;
   description?: string;
   storeTypeId: string;
+  country?: string;
+  city?: string;
+  postalCode?: string;
+  streetAddress1?: string;
+  streetAddress2?: string;
   phone?: string;
   acreage?: number;
   latlong?: string;
@@ -265,6 +315,11 @@ export interface UpdateStoreVariables {
 export interface RegisterStoreVariables {
   name: string;
   description?: string;
+  country?: string;
+  city?: string;
+  postalCode?: string;
+  streetAddress1?: string;
+  streetAddress2?: string;
   storeTypeId: string;
   phone?: string;
   acreage?: number;

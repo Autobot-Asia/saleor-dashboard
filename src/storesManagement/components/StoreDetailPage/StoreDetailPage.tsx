@@ -41,6 +41,12 @@ export interface StoreDetailVariables {
   phone: string;
   acreage: number;
   latlong: string;
+  userName: string;
+  country: string;
+  city: string;
+  postalCode: string;
+  streetAddress1: string;
+  streetAddress2: string;
 }
 
 export interface SiteSettingsPageFormData extends StoreDetailVariables {
@@ -72,7 +78,13 @@ const StoreDetailPage: React.FC<IProps> = ({
         storeType: initialValues.store.storeType?.id,
         phone: initialValues.store.phone,
         acreage: initialValues.store.acreage,
-        latlong: initialValues.store.latlong
+        latlong: initialValues.store.latlong,
+        userName: initialValues.store.userName,
+        country: initialValues.store.country,
+        city: initialValues.store.city,
+        postalCode: initialValues.store.postalCode,
+        streetAddress1: initialValues.store.streetAddress1,
+        streetAddress2: initialValues.store.streetAddress2
       }
     : {
         name: "",
@@ -80,7 +92,13 @@ const StoreDetailPage: React.FC<IProps> = ({
         storeType: "",
         phone: "",
         acreage: 0,
-        latlong: ""
+        latlong: "",
+        userName: "",
+        country: "",
+        city: "",
+        postalCode: "",
+        streetAddress1: "",
+        streetAddress2: ""
       };
 
   return (
@@ -90,7 +108,8 @@ const StoreDetailPage: React.FC<IProps> = ({
           !hasChanged ||
           disabled ||
           data.name.length === 0 ||
-          data.storeType.length === 0;
+          data.storeType.length === 0 ||
+          data.phone.length === 0;
         return (
           <Container>
             <AppHeader onBack={onBack}>

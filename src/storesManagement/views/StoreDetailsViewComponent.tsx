@@ -60,6 +60,11 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
       const variables: UpdateStoreVariables = {
         name: data.name,
         id,
+        country: data.country,
+        city: data.city,
+        postalCode: data.postalCode,
+        streetAddress1: data.streetAddress1,
+        streetAddress2: data.streetAddress2,
         storeTypeId: data.storeType,
         acreage: data.acreage,
         description: JSON.stringify({
@@ -115,6 +120,11 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
           description: data.description
         }),
         phone: data.phone,
+        country: data.country,
+        city: data.city,
+        postalCode: data.postalCode,
+        streetAddress1: data.streetAddress1,
+        streetAddress2: data.streetAddress2,
         latlong: data.latlong
       };
       createStore({

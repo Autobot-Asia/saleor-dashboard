@@ -1,5 +1,5 @@
 import { TextField } from "@material-ui/core";
-import Grid from "@saleor/components/Grid";
+import { COUNTRY_LIST } from "@saleor/country";
 import { FormChange } from "@saleor/hooks/useForm";
 import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
 import { useListStoreTypeQuery } from "@saleor/storesManagement/queries";
@@ -36,6 +36,11 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
     variables: {}
   });
 
+  const countryOptions: Choices = COUNTRY_LIST.map(item => ({
+    value: item.value,
+    label: item.text
+  }));
+
   const typeOptions: Choices =
     dataType?.storeTypes?.edges?.map(item => ({
       value: item.node.id,
@@ -56,43 +61,38 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
       />
 
       <FormSpacer />
-      <Grid>
-        <TextField
-          label={intl.formatMessage({
-            defaultMessage: "First Name"
-          })}
-          fullWidth
-          name="firstName"
-          // onChange={change}
-        />
-        <TextField
-          label={intl.formatMessage({
-            defaultMessage: "Last Name"
-          })}
-          fullWidth
-          name="lastName"
-          // onChange={change}
-        />
-      </Grid>
-      <FormSpacer />
+
       <TextField
+        label={intl.formatMessage({
+          defaultMessage: "User Name"
+        })}
+        fullWidth
+        name="userName"
+        onChange={change}
+        value={data.userName}
+        disabled
+      />
+      <FormSpacer />
+      {/* <TextField
         label={intl.formatMessage({
           defaultMessage: "Email Address"
         })}
         fullWidth
         name="email"
-        // onChange={change}
+        onChange={change}
       />
-      <FormSpacer />
+      <FormSpacer /> */}
 
-      <TextField
+      <SingleSelectField
+        choices={countryOptions}
+        name="country"
+        value={data.country}
+        onChange={change}
         label={intl.formatMessage({
           defaultMessage: "Country"
         })}
-        fullWidth
-        name="country"
-        // onChange={change}
       />
+
       <FormSpacer />
       <TextField
         label={intl.formatMessage({
@@ -100,7 +100,8 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         })}
         fullWidth
         name="city"
-        // onChange={change}
+        onChange={change}
+        value={data.city}
       />
       <FormSpacer />
       <TextField
@@ -108,8 +109,9 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Zip/Postal Code"
         })}
         fullWidth
-        name="zip"
-        // onChange={change}
+        name="postalCode"
+        onChange={change}
+        value={data.postalCode}
       />
       <FormSpacer />
       <TextField
@@ -117,8 +119,9 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Address 1"
         })}
         fullWidth
-        name="address1"
-        // onChange={change}
+        name="streetAddress1"
+        onChange={change}
+        value={data.streetAddress1}
       />
       <FormSpacer />
       <TextField
@@ -126,8 +129,9 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Address 2"
         })}
         fullWidth
-        name="address2"
-        // onChange={change}
+        name="streetAddress2"
+        onChange={change}
+        value={data.streetAddress2}
       />
       <FormSpacer />
       <TextField
