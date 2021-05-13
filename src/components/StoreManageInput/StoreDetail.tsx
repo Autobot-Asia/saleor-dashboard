@@ -74,6 +74,8 @@ function StoreDetail({ store }: IProps) {
       }
     : {};
 
+  const isShowMap = store?.store?.latlong !== "";
+
   return (
     <div>
       <Grid container>
@@ -87,17 +89,19 @@ function StoreDetail({ store }: IProps) {
             </Grid>
           </Grid>
         ))}
-        <Grid container item xs={12} sm={12}>
-          <Grid item xs={12} sm={12}>
-            <WrappedMap
-              name="latlong"
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ width: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-            />
+        {isShowMap && (
+          <Grid container item xs={12} sm={12}>
+            <Grid item xs={12} sm={12}>
+              <WrappedMap
+                name="latlong"
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ width: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
     </div>
   );
