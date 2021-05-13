@@ -16,7 +16,11 @@ import {
   useStoreById,
   useUpdateStoreMutation
 } from "../queries";
-import { storesManagementSection, StoreUrlQueryParams } from "../urls";
+import {
+  storePath,
+  storesManagementSection,
+  StoreUrlQueryParams
+} from "../urls";
 interface IProps {
   id: string;
   params: StoreUrlQueryParams;
@@ -40,7 +44,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
             status: "success",
             text: intl.formatMessage(commonMessages.savedChanges)
           });
-          navigate(storesManagementSection);
+          navigate(storePath(id));
         } else {
           notify({
             status: "error",
@@ -76,7 +80,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
           disabled={loading}
           storeId={id}
           initialValues={data}
-          onBack={() => navigate(storesManagementSection)}
+          onBack={() => navigate(storePath(id))}
           handleRefetch={refetch}
           onSubmit={handleSubmit}
         />

@@ -54,7 +54,8 @@ const StoreDetailPage: React.FC<IProps> = ({
   onBack,
   saveButtonBarState,
   onSubmit,
-  disabled
+  disabled,
+  storeId
 }) => {
   const intl = useIntl();
 
@@ -93,7 +94,9 @@ const StoreDetailPage: React.FC<IProps> = ({
         return (
           <Container>
             <AppHeader onBack={onBack}>
-              {intl.formatMessage(sectionNames.listStore)}
+              {storeId
+                ? intl.formatMessage(sectionNames.stores)
+                : intl.formatMessage(sectionNames.listStore)}
             </AppHeader>
 
             <StoreInput

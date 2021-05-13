@@ -9,11 +9,15 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { WindowTitle } from "../components/WindowTitle";
 import {
   storeAddPath,
+  storeEditPath,
   storeListPath,
   storePath,
   StoreUrlQueryParams
 } from "./urls";
+import StoreCreateView from "./views/StoreCreate";
+import StoreDetailInfomation from "./views/StoreDetailInfomation";
 import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
+// import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
 import StoreListViewComponent from "./views/StoreList";
 
 const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
@@ -23,14 +27,6 @@ const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
   return <StoreListViewComponent params={params} />;
 };
 
-// const StoreCreateView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
-//   const qs = parseQs(location.search.substr(1));
-//   const params: any = asSortParams(qs, CustomerListUrlSortField);
-
-//   return <StoreListViewComponent params={params} />;
-// };
-
-// import HomePage from "./views";
 interface StoreDetailsRouteParams {
   id: string;
 }
@@ -39,8 +35,22 @@ const DetailStoreView: React.FC<RouteComponentProps<
 >> = ({ location, match }) => {
   const qs = parseQs(location.search.substr(1));
   const params: StoreUrlQueryParams = qs;
+
   return (
     <StoreDetailsViewComponent
+      id={decodeURIComponent(match.params.id)}
+      params={params}
+    />
+  );
+};
+
+const DetailStoreViewMode: React.FC<RouteComponentProps<
+  StoreDetailsRouteParams
+>> = ({ location, match }) => {
+  const qs = parseQs(location.search.substr(1));
+  const params: StoreUrlQueryParams = qs;
+  return (
+    <StoreDetailInfomation
       id={decodeURIComponent(match.params.id)}
       params={params}
     />
@@ -56,7 +66,8 @@ export const StoreSection: React.FC<{}> = () => {
       <Switch>
         <Route exact path={storeListPath} component={StoreListView} />
         <Route exact path={storeAddPath} component={DetailStoreView} />
-        <Route exact path={storePath(":id")} component={DetailStoreView} />
+        <Route exact path={storeEditPath(":id")} component={DetailStoreView} />
+        <Route exact path={storePath(":id")} component={DetailStoreViewMode} />
       </Switch>
     </>
   );
