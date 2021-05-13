@@ -17,15 +17,23 @@ interface Props {
 
 const StoreForm: React.FC<Props> = ({ data, change }) => {
   const intl = useIntl();
+
+  const lat = data?.latlong ? parseFloat(data.latlong.split(",")[0]) : 0;
+  const lng = data?.latlong ? parseFloat(data?.latlong?.split(",")[1]) : 0;
+
   const position = {
-    lat: 0,
-    lng: 0
+    lat,
+    lng
   };
   const Map = () => (
     <GoogleMap
       defaultZoom={15}
       defaultCenter={position}
-      // onClick={e => handleClick(e, props)}
+      onClick={e => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        change({ target: { name: "latlong", value: `${lat},${lng}` } });
+      }}
     >
       <Marker position={position} />
     </GoogleMap>
@@ -183,9 +191,6 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         loadingElement={<div style={{ width: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        onChange={(name: any, value: any) => {
-          change({ target: { name, value } });
-        }}
       />
       <FormSpacer />
     </>
