@@ -56,3 +56,5 @@ export const storeDetailPath = (id: string) => urlJoin(storePath(id), "detail");
 
 export const storeAddPath = urlJoin(storeSection, "add");
 export const storeAddUrl = storeAddPath;
+
+export const storeEditPath = (id: string) => urlJoin(storePath(id), "edit");
