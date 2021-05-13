@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   }
 });
 
-function StoreDetail({}: IProps) {
+function StoreDetail({ store }: IProps) {
   const classes = useStyles();
   const position = {
     lat: 0,
@@ -39,11 +39,48 @@ function StoreDetail({}: IProps) {
     </GoogleMap>
   );
 
+  const Mapping = {
+    name: { title: "Store Name:", value: store.name },
+    fullName: { title: "Full Name:", value: store.fullName },
+    email: { title: "Email:", value: store.email },
+    country: { title: "Country:", value: store.country },
+    phone: { title: "Phone:", value: store.phone },
+    city: { title: "City:", value: store.city },
+    postalCode: { title: "ZIP/ PostalCode:", value: store.postalCode },
+    area: { title: "Area:", value: store.area },
+    address1: { title: "Address 1", value: store.address1 },
+    address2: { title: "Address 1", value: store.address2 },
+    location: { title: "Location", value: store.location }
+  };
+
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
     <div>
       <Grid container>
-        <Grid container item xs={12} sm={12}>
+        {Object.keys(Mapping).map((item, index) => (
+          <Grid key={index} container item xs={12} sm={12}>
+            <Grid item xs={3} sm={3}>
+              <p className={classes.title}>{Mapping[item].title}</p>
+            </Grid>
+            <Grid item xs={9} sm={9}>
+              {item === "location" ? (
+                <WrappedMap
+                  name="latlong"
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
+                  loadingElement={<div style={{ width: `100%` }} />}
+                  containerElement={<div style={{ height: `400px` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                  // onChange={(name: any, value: any) => {
+                  //   setFieldValue(name, value);
+                  // }}
+                />
+              ) : (
+                <p className={classes.title}>{Mapping[item].value}</p>
+              )}
+            </Grid>
+          </Grid>
+        ))}
+        {/* <Grid container item xs={12} sm={12}>
           <Grid item xs={3} sm={3}>
             <p className={classes.title}>Store Name:</p>
           </Grid>
@@ -149,7 +186,7 @@ function StoreDetail({}: IProps) {
               // }}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );
