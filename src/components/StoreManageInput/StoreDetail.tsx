@@ -28,19 +28,25 @@ const useStyles = makeStyles(
 
 function StoreDetail({ store }: IProps) {
   const classes = useStyles();
+
+  const lat = store?.store?.latlong
+    ? parseFloat(store.store.latlong.split(",")[0])
+    : 0;
+  const lng = store?.store?.latlong
+    ? parseFloat(store.store?.latlong?.split(",")[1])
+    : 0;
+
   const position = {
-    lat: 0,
-    lng: 0
+    lat,
+    lng
   };
+
   const Map = () => (
-    <GoogleMap
-      defaultZoom={15}
-      defaultCenter={position}
-      // onClick={e => handleClick(e, props)}
-    >
+    <GoogleMap defaultZoom={15} defaultCenter={position}>
       <Marker position={position} />
     </GoogleMap>
   );
+  const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
 
   const storeInfo = store?.store;
 
@@ -68,7 +74,6 @@ function StoreDetail({ store }: IProps) {
       }
     : {};
 
-  const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
     <div>
       <Grid container>
@@ -78,23 +83,21 @@ function StoreDetail({ store }: IProps) {
               <p className={classes.title}>{Mapping[item].title}</p>
             </Grid>
             <Grid item xs={9} sm={9}>
-              {item === "location" ? (
-                <WrappedMap
-                  name="latlong"
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ width: `100%` }} />}
-                  containerElement={<div style={{ height: `400px` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                  // onChange={(name: any, value: any) => {
-                  //   setFieldValue(name, value);
-                  // }}
-                />
-              ) : (
-                <p className={classes.title}>{Mapping[item].value}</p>
-              )}
+              <p className={classes.title}>{Mapping[item].value}</p>
             </Grid>
           </Grid>
         ))}
+        <Grid container item xs={12} sm={12}>
+          <Grid item xs={12} sm={12}>
+            <WrappedMap
+              name="latlong"
+              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
+              loadingElement={<div style={{ width: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   );
