@@ -14,7 +14,6 @@ import {
   storePath,
   StoreUrlQueryParams
 } from "./urls";
-import StoreCreateView from "./views/StoreCreate";
 import StoreDetailInfomation from "./views/StoreDetailInfomation";
 import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
 // import StoreDetailsViewComponent from "./views/StoreDetailsViewComponent";
