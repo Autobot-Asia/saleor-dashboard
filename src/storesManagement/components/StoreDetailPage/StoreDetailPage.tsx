@@ -66,8 +66,8 @@ const StoreDetailPage: React.FC<IProps> = ({
   const intl = useIntl();
 
   const tempDescription =
-    initialValues?.store.description &&
-    initialValues?.store.description.replace(/'/g, '"');
+    initialValues?.store?.description &&
+    initialValues?.store?.description.replace(/'/g, '"');
 
   const initialForm: Partial<StoreDetailVariables> = initialValues?.store
     ? {

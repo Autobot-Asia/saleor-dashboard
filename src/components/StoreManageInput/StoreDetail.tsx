@@ -55,26 +55,32 @@ function StoreDetail({ store }: IProps) {
 
   const Mapping = storeInfo
     ? {
-        name: { title: "Store Name:", value: storeInfo.name },
-        userName: { title: "User Name:", value: storeInfo.userName },
+        name: { title: "Store Name:", value: storeInfo.name || "" },
+        userName: { title: "User Name:", value: storeInfo.userName || "" },
         // email: { title: "Email:", value: storeInfo.email },
-        country: { title: "Country:", value: storeInfo.country },
-        city: { title: "City:", value: storeInfo.city },
-        phone: { title: "Phone:", value: storeInfo.phone },
-        postalCode: { title: "ZIP/ PostalCode:", value: storeInfo.postalCode },
+        country: { title: "Country:", value: storeInfo.country || "" },
+        city: { title: "City:", value: storeInfo.city || "" },
+        phone: { title: "Phone:", value: storeInfo.phone || "" },
+        postalCode: {
+          title: "ZIP/ PostalCode:",
+          value: storeInfo.postalCode || ""
+        },
         // area: { title: "Area:", value: storeInfo.area },
-        address1: { title: "Address 1", value: storeInfo.streetAddress1 },
-        address2: { title: "Address 1", value: storeInfo.streetAddress2 },
+        address1: { title: "Address 1", value: storeInfo.streetAddress1 || "" },
+        address2: { title: "Address 1", value: storeInfo.streetAddress2 || "" },
         description: {
           title: "Description:",
           value: JSON.parse(tempDescription)?.description || ""
         },
-        storeType: { title: "Store Type:", value: storeInfo.storeType?.name },
-        storeAcreage: { title: "Store Acreage", value: storeInfo.acreage }
+        storeType: {
+          title: "Store Type:",
+          value: storeInfo.storeType?.name || ""
+        },
+        storeAcreage: { title: "Store Acreage", value: storeInfo.acreage || "" }
       }
     : {};
 
-  const isShowMap = store?.store?.latlong !== "";
+  const isShowMap = store?.store?.latlong && store?.store?.latlong !== "";
 
   return (
     <div>
