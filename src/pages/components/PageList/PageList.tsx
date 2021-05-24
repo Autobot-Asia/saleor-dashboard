@@ -24,7 +24,7 @@ export interface PageListProps
   extends ListProps,
     ListActions,
     SortPage<PageListUrlSortField> {
-  pages: PageList_pages_edges_node[];
+  pages?: PageList_pages_edges_node[];
 }
 
 const useStyles = makeStyles(

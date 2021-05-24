@@ -52,6 +52,7 @@ import PageSection from "./pages";
 import PageTypesSection from "./pageTypes";
 import PermissionGroupSection from "./permissionGroups";
 import PluginsSection from "./plugins";
+import PostSection from "./PostsManage";
 import ProductSection from "./products";
 import ProductTypesSection from "./productTypes";
 import errorTracker from "./services/errorTracking";
@@ -178,6 +179,7 @@ const Routes: React.FC = () => {
             <Switch>
               <SectionRoute exact path="/" component={HomePage} />
               <SectionRoute path="/storesManagement" component={StoreSection} />
+              <SectionRoute path="/postsManagement" component={PostSection} />
               <SectionRoute
                 permissions={[PermissionEnum.MANAGE_PRODUCTS]}
                 path="/categories"
