@@ -189,6 +189,14 @@ export const buttonMessages = defineMessages({
 });
 
 export const sectionNames = defineMessages({
+  stores: {
+    defaultMessage: "Stores",
+    description: "stores section name"
+  },
+  listStore: {
+    defaultMessage: "List Stores",
+    description: "list stores"
+  },
   apps: {
     defaultMessage: "Apps",
     description: "apps section name"

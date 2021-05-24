@@ -1,83 +1,106 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField
-} from "@material-ui/core";
-import Grid from "@saleor/components/Grid";
+import { TextField } from "@material-ui/core";
+import { COUNTRY_LIST } from "@saleor/country";
+import { FormChange } from "@saleor/hooks/useForm";
+import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
+import { useListStoreTypeQuery } from "@saleor/storesManagement/queries";
 import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
 
 import FormSpacer from "../FormSpacer";
+import SingleSelectField, { Choices } from "../SingleSelectField";
+interface Props {
+  data: Partial<StoreDetailVariables>;
+  change: FormChange;
+}
 
-const StoreFom = () => {
+const StoreForm: React.FC<Props> = ({ data, change }) => {
   const intl = useIntl();
+
+  const lat = data?.latlong ? parseFloat(data.latlong.split(",")[0]) : 0;
+  const lng = data?.latlong ? parseFloat(data?.latlong?.split(",")[1]) : 0;
+
   const position = {
-    lat: 0,
-    lng: 0
+    lat,
+    lng
   };
   const Map = () => (
     <GoogleMap
       defaultZoom={15}
       defaultCenter={position}
-      // onClick={e => handleClick(e, props)}
+      onClick={e => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        change({ target: { name: "latlong", value: `${lat},${lng}` } });
+      }}
     >
       <Marker position={position} />
     </GoogleMap>
   );
 
+  const { data: dataType } = useListStoreTypeQuery({
+    displayLoader: true,
+    variables: {}
+  });
+
+  const countryOptions: Choices = COUNTRY_LIST.map(item => ({
+    value: item.value,
+    label: item.text
+  }));
+
+  const typeOptions: Choices =
+    dataType?.storeTypes?.edges?.map(item => ({
+      value: item.node.id,
+      label: item.node.name
+    })) || [];
+
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
   return (
-    <div>
+    <>
       <TextField
         label={intl.formatMessage({
           defaultMessage: "Store Name"
         })}
         fullWidth
         name="name"
-        // onChange={change}
+        value={data.name}
+        onChange={change}
+      />
+
+      <FormSpacer />
+
+      <TextField
+        label={intl.formatMessage({
+          defaultMessage: "User Name"
+        })}
+        fullWidth
+        name="userName"
+        onChange={change}
+        value={data.userName}
+        disabled
       />
       <FormSpacer />
-      <Grid>
-        <TextField
-          label={intl.formatMessage({
-            defaultMessage: "First Name"
-          })}
-          fullWidth
-          name="firstName"
-          // onChange={change}
-        />
-        <TextField
-          label={intl.formatMessage({
-            defaultMessage: "Last Name"
-          })}
-          fullWidth
-          name="lastName"
-          // onChange={change}
-        />
-      </Grid>
-      <FormSpacer />
-      <TextField
+      {/* <TextField
         label={intl.formatMessage({
           defaultMessage: "Email Address"
         })}
         fullWidth
         name="email"
-        // onChange={change}
+        onChange={change}
       />
-      <FormSpacer />
+      <FormSpacer /> */}
 
-      <TextField
+      <SingleSelectField
+        choices={countryOptions}
+        name="country"
+        value={data.country}
+        onChange={change}
         label={intl.formatMessage({
           defaultMessage: "Country"
         })}
-        fullWidth
-        name="country"
-        // onChange={change}
       />
+
       <FormSpacer />
       <TextField
         label={intl.formatMessage({
@@ -85,7 +108,8 @@ const StoreFom = () => {
         })}
         fullWidth
         name="city"
-        // onChange={change}
+        onChange={change}
+        value={data.city}
       />
       <FormSpacer />
       <TextField
@@ -93,8 +117,9 @@ const StoreFom = () => {
           defaultMessage: "Zip/Postal Code"
         })}
         fullWidth
-        name="zip"
-        // onChange={change}
+        name="postalCode"
+        onChange={change}
+        value={data.postalCode}
       />
       <FormSpacer />
       <TextField
@@ -102,8 +127,9 @@ const StoreFom = () => {
           defaultMessage: "Address 1"
         })}
         fullWidth
-        name="address1"
-        // onChange={change}
+        name="streetAddress1"
+        onChange={change}
+        value={data.streetAddress1}
       />
       <FormSpacer />
       <TextField
@@ -111,8 +137,9 @@ const StoreFom = () => {
           defaultMessage: "Address 2"
         })}
         fullWidth
-        name="address2"
-        // onChange={change}
+        name="streetAddress2"
+        onChange={change}
+        value={data.streetAddress2}
       />
       <FormSpacer />
       <TextField
@@ -120,38 +147,31 @@ const StoreFom = () => {
           defaultMessage: "Store Description"
         })}
         fullWidth
+        value={data.description}
         name="description"
-        // onChange={change}
+        onChange={change}
       />
       <FormSpacer />
 
-      <FormControl variant="outlined" style={{ width: "100%" }}>
-        <InputLabel id="demo-simple-select-outlined-label">
-          Store Type
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          //   value={age}
-          //   onChange={handleChange}
-          name="storeType"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+      <SingleSelectField
+        choices={typeOptions}
+        name="storeType"
+        value={data.storeType}
+        onChange={change}
+        label={intl.formatMessage({
+          defaultMessage: "Store Type"
+        })}
+      />
+
       <FormSpacer />
       <TextField
         label={intl.formatMessage({
           defaultMessage: "Phone"
         })}
         fullWidth
-        name="description"
-        // onChange={change}
+        name="phone"
+        onChange={change}
+        value={data.phone}
       />
       <FormSpacer />
       <TextField
@@ -159,8 +179,10 @@ const StoreFom = () => {
           defaultMessage: "Store Acreage"
         })}
         fullWidth
-        name="description"
-        // onChange={change}
+        type="number"
+        name="acreage"
+        value={data.acreage}
+        onChange={change}
       />
       <FormSpacer />
       <WrappedMap
@@ -169,13 +191,10 @@ const StoreFom = () => {
         loadingElement={<div style={{ width: `100%` }} />}
         containerElement={<div style={{ height: `400px` }} />}
         mapElement={<div style={{ height: `100%` }} />}
-        // onChange={(name: any, value: any) => {
-        //   setFieldValue(name, value);
-        // }}
       />
       <FormSpacer />
-    </div>
+    </>
   );
 };
 
-export default StoreFom;
+export default StoreForm;

@@ -43,7 +43,7 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
     {
       ariaLabel: "storesManagement",
       icon: homeIcon,
-      label: intl.formatMessage(sectionNames.storesManagement),
+      label: intl.formatMessage(sectionNames.stores),
       testingContextId: "storesManagement",
       url: storesManagementListUrl()
     },

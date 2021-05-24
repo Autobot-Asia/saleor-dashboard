@@ -427,7 +427,7 @@ export const ProductList: React.FC<ProductListProps> = ({ params }) => {
         </DialogContentText>
       </ActionDialog>
       <ProductExportDialog
-        attributes={(searchAttributes.result.data?.search.edges || []).map(
+        attributes={(searchAttributes.result.data?.search?.edges || []).map(
           edge => edge.node
         )}
         hasMore={searchAttributes.result.data?.search.pageInfo.hasNextPage}
