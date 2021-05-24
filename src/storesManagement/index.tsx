@@ -23,15 +23,6 @@ const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
 
   return <StoreListViewComponent params={params} />;
 };
-
-// const StoreCreateView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
-//   const qs = parseQs(location.search.substr(1));
-//   const params: any = asSortParams(qs, CustomerListUrlSortField);
-
-//   return <StoreListViewComponent params={params} />;
-// };
-
-// import HomePage from "./views";
 interface StoreDetailsRouteParams {
   id: string;
 }

@@ -6,6 +6,7 @@ import homeIcon from "@assets/images/menu-home-icon.svg";
 import ordersIcon from "@assets/images/menu-orders-icon.svg";
 import translationIcon from "@assets/images/menu-translation-icon.svg";
 import { commonMessages, sectionNames } from "@saleor/intl";
+import { postsManagementListUrl } from "@saleor/PostsManage/urls";
 import { storesManagementListUrl } from "@saleor/storesManagement/urls";
 import { IntlShape } from "react-intl";
 
@@ -45,6 +46,13 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
       label: intl.formatMessage(sectionNames.storesManagement),
       testingContextId: "storesManagement",
       url: storesManagementListUrl()
+    },
+    {
+      ariaLabel: "posts",
+      icon: homeIcon,
+      label: intl.formatMessage(sectionNames.posts),
+      testingContextId: "posts",
+      url: postsManagementListUrl()
     },
     {
       ariaLabel: "catalogue",
