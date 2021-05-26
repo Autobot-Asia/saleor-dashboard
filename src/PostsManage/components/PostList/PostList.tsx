@@ -14,7 +14,7 @@ import { renderCollection } from "@saleor/misc";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-const numberOfColumns = 5;
+const numberOfColumns = 3;
 
 const useStyles = makeStyles(
   theme => ({
@@ -73,12 +73,12 @@ function PostList(props: any) {
         <TableCellHeader arrowPosition="right" className={classes.colName}>
           <FormattedMessage defaultMessage="Content" />
         </TableCellHeader>
-        <TableCellHeader className={classes.colEmail}>
+        {/* <TableCellHeader className={classes.colEmail}>
           <FormattedMessage defaultMessage="Content" />
         </TableCellHeader>
         <TableCellHeader textAlign="center" className={classes.colOrders}>
           <FormattedMessage defaultMessage="Joined date" />
-        </TableCellHeader>
+        </TableCellHeader> */}
       </TableHead>
       <TableFooter>
         <TableRow>
@@ -100,6 +100,8 @@ function PostList(props: any) {
           posts,
           (post: any) => {
             const isSelected = post ? isChecked(post.id) : false;
+            const temp = post && post.content;
+
             return (
               <TableRow
                 className={!!post ? classes.tableRow : undefined}
@@ -120,19 +122,18 @@ function PostList(props: any) {
                   {/* {getUserName(post)} */}
                   {post && post.title}
                 </TableCell>
-                <TableCell className={classes.colEmail}>
-                  {/* {post.content && JSON.parse(post.content).content} */}
-                  {/* {maybe<React.ReactNode>(() => post.email, <Skeleton />)} */}
+                <TableCell className={classes.colName}>
+                  {post && JSON.parse(post?.content.replace(/'/g, '"')).content}
                 </TableCell>
-                <TableCell className={classes.colOrders}>
-                  {/* {maybe<React.ReactNode>(
+                {/* <TableCell className={classes.colOrders}>
+                  {maybe<React.ReactNode>(
                     () => post.orders.totalCount,
                     <Skeleton />
-                  )} */}
+                  )}
                 </TableCell>
                 <TableCell className={classes.colOrders}>
-                  {/* {post && formatDate(post.dateJoined)} */}
-                </TableCell>
+                  {post && formatDate(post.dateJoined)}
+                </TableCell> */}
               </TableRow>
             );
           },
