@@ -100,8 +100,6 @@ function PostList(props: any) {
           posts,
           (post: any) => {
             const isSelected = post ? isChecked(post.id) : false;
-            const temp = post && post.content;
-
             return (
               <TableRow
                 className={!!post ? classes.tableRow : undefined}
