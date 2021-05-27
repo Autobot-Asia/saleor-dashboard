@@ -1,5 +1,6 @@
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { DEFAULT_INITIAL_PAGINATION_DATA } from "@saleor/config";
 import useBulkActions from "@saleor/hooks/useBulkActions";
 import useListSettings from "@saleor/hooks/useListSettings";
 import useNavigator from "@saleor/hooks/useNavigator";
@@ -100,6 +101,18 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
     navigate,
     storesManagementListUrl,
     params
+  );
+
+  React.useEffect(
+    () =>
+      navigate(
+        storesManagementListUrl({
+          ...params,
+          ...DEFAULT_INITIAL_PAGINATION_DATA
+        }),
+        true
+      ),
+    [settings.rowNumber]
   );
 
   return (

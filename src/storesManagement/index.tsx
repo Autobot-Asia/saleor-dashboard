@@ -1,6 +1,7 @@
 import { CustomerListUrlSortField } from "@saleor/customers/urls";
 import { sectionNames } from "@saleor/intl";
 import { asSortParams } from "@saleor/utils/sort";
+import { getArrayQueryParam } from "@saleor/utils/urls";
 import { parse as parseQs } from "qs";
 import React from "react";
 import { useIntl } from "react-intl";
@@ -21,7 +22,16 @@ import StoreListViewComponent from "./views/StoreList";
 
 const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
   const qs = parseQs(location.search.substr(1));
-  const params: any = asSortParams(qs, CustomerListUrlSortField);
+  const params: any = asSortParams(
+    {
+      ...qs,
+      categories: getArrayQueryParam(qs.categories),
+      collections: getArrayQueryParam(qs.collections),
+      ids: getArrayQueryParam(qs.ids),
+      productTypes: getArrayQueryParam(qs.productTypes)
+    },
+    CustomerListUrlSortField
+  );
 
   return <StoreListViewComponent params={params} />;
 };
