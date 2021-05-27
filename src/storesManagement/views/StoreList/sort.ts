@@ -1,17 +1,12 @@
-import { CustomerListUrlSortField } from "@saleor/customers/urls";
-import { UserSortField } from "@saleor/types/globalTypes";
+import { StoreListUrlSortField } from "@saleor/storesManagement/urls";
+import { StoreSortField } from "@saleor/types/globalTypes";
 import { createGetSortQueryVariables } from "@saleor/utils/sort";
 
-export function getSortQueryField(
-  sort: CustomerListUrlSortField
-): UserSortField {
+export function getSortQueryField(sort: StoreListUrlSortField): StoreSortField {
   switch (sort) {
-    case CustomerListUrlSortField.email:
-      return UserSortField.EMAIL;
-    case CustomerListUrlSortField.name:
-      return UserSortField.LAST_NAME;
-    case CustomerListUrlSortField.orders:
-      return UserSortField.ORDER_COUNT;
+    case StoreListUrlSortField.name:
+      return StoreSortField.NAME;
+
     default:
       return undefined;
   }

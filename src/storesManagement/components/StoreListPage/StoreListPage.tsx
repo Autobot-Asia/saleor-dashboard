@@ -3,8 +3,8 @@ import Card from "@material-ui/core/Card";
 import Container from "@saleor/components/Container";
 import FilterBar from "@saleor/components/FilterBar";
 import PageHeader from "@saleor/components/PageHeader";
-import { CustomerListUrlSortField } from "@saleor/customers/urls";
 import { sectionNames } from "@saleor/intl";
+import { StoreListUrlSortField } from "@saleor/storesManagement/urls";
 import {
   FilterPageProps,
   ListActions,
@@ -27,7 +27,7 @@ export interface CustomerListPageProps
   extends PageListProps,
     ListActions,
     FilterPageProps<CustomerFilterKeys, CustomerListFilterOpts>,
-    SortPage<CustomerListUrlSortField>,
+    SortPage<StoreListUrlSortField>,
     TabPageProps {
   stores: ListStores_stores_edges_node[];
 }

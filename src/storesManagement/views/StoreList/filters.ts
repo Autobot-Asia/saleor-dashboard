@@ -9,7 +9,6 @@ import { CustomerFilterInput } from "@saleor/types/globalTypes";
 import {
   createFilterTabUtils,
   createFilterUtils,
-  getGteLteVariables,
   getMinMaxQueryParam
 } from "../../../utils/filters";
 import {
@@ -57,14 +56,14 @@ export function getFilterVariables(
   params: StoreListUrlFilters
 ): CustomerFilterInput {
   return {
-    dateJoined: getGteLteVariables({
-      gte: params.joinedFrom,
-      lte: params.joinedTo
-    }),
-    numberOfOrders: getGteLteVariables({
-      gte: parseInt(params.numberOfOrdersFrom, 0),
-      lte: parseInt(params.numberOfOrdersTo, 0)
-    }),
+    // dateJoined: getGteLteVariables({
+    //   gte: params.joinedFrom,
+    //   lte: params.joinedTo
+    // }),
+    // numberOfOrders: getGteLteVariables({
+    //   gte: parseInt(params.numberOfOrdersFrom, 0),
+    //   lte: parseInt(params.numberOfOrdersTo, 0)
+    // }),
     search: params.query
   };
 }
