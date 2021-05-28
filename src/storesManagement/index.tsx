@@ -1,6 +1,5 @@
 import { sectionNames } from "@saleor/intl";
 import { asSortParams } from "@saleor/utils/sort";
-import { getArrayQueryParam } from "@saleor/utils/urls";
 import { parse as parseQs } from "qs";
 import React from "react";
 import { useIntl } from "react-intl";
