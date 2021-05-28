@@ -30,6 +30,8 @@ import {
   getFilterQueryParam,
   getFilterTabs
 } from "./filters";
+import { getFilterVariables } from "./filters";
+import { getSortQueryVariables } from "./sort";
 
 interface CustomerListProps {
   params: any;
@@ -67,7 +69,9 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
 
   const queryVariables = React.useMemo(
     () => ({
-      ...paginationState
+      ...paginationState,
+      filter: getFilterVariables(params),
+      sort: getSortQueryVariables(params)
     }),
     [params]
   );
