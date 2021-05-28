@@ -7,8 +7,8 @@ import ResponsiveTable from "@saleor/components/ResponsiveTable";
 import TableCellHeader from "@saleor/components/TableCellHeader";
 import TableHead from "@saleor/components/TableHead";
 import TablePagination from "@saleor/components/TablePagination";
-import { CustomerListUrlSortField } from "@saleor/customers/urls";
 import { renderCollection } from "@saleor/misc";
+import { StoreListUrlSortField } from "@saleor/storesManagement/urls";
 import { makeStyles } from "@saleor/theme";
 import { ListActions, ListProps, SortPage } from "@saleor/types";
 import React from "react";
@@ -42,7 +42,7 @@ const useStyles = makeStyles(
 export interface StoreListProps
   extends ListProps,
     ListActions,
-    SortPage<CustomerListUrlSortField> {
+    SortPage<StoreListUrlSortField> {
   stores: ListStores_stores_edges_node[];
 }
 

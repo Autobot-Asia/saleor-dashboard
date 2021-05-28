@@ -18,13 +18,6 @@ export const storeListPath = storesManagementSection;
 
 export type StoresListUrlDialog = "remove" | TabActionDialog;
 
-export type StoreListUrlQueryParams = ActiveTab &
-  BulkAction &
-  StoreListUrlFilters &
-  StoreListUrlSort &
-  Dialog<StoreListUrlDialog> &
-  Pagination;
-
 export type StoreListUrlDialog = "remove" | TabActionDialog;
 
 export enum StoreListUrlFiltersEnum {
@@ -37,11 +30,19 @@ export enum StoreListUrlFiltersEnum {
 
 export enum StoreListUrlSortField {
   name = "name"
+  // rank = "rank"
 }
 
 export type StoreListUrlSort = Sort<StoreListUrlSortField>;
 
 export type StoreListUrlFilters = Filters<StoreListUrlFiltersEnum>;
+
+export type StoreListUrlQueryParams = ActiveTab &
+  BulkAction &
+  StoreListUrlFilters &
+  StoreListUrlSort &
+  Dialog<StoreListUrlDialog> &
+  Pagination;
 
 export const storePath = (id: string) => urlJoin(storeSection, id);
 export type StoreUrlDialog = "remove";
