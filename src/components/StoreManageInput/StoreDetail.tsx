@@ -67,7 +67,7 @@ function StoreDetail({ store }: IProps) {
         },
         // area: { title: "Area:", value: storeInfo.area },
         address1: { title: "Address 1", value: storeInfo.streetAddress1 || "" },
-        address2: { title: "Address 1", value: storeInfo.streetAddress2 || "" },
+        address2: { title: "Address 2", value: storeInfo.streetAddress2 || "" },
         description: {
           title: "Description:",
           value: JSON.parse(tempDescription)?.description || ""
@@ -88,7 +88,9 @@ function StoreDetail({ store }: IProps) {
         {Object.keys(Mapping).map((item, index) => (
           <Grid key={index} container item xs={12} sm={12}>
             <Grid item xs={3} sm={3}>
-              <p className={classes.title}>{Mapping[item].title}</p>
+              <p style={{ fontWeight: "bolder" }} className={classes.title}>
+                {Mapping[item].title}
+              </p>
             </Grid>
             <Grid item xs={9} sm={9}>
               <p className={classes.title}>{Mapping[item].value}</p>
