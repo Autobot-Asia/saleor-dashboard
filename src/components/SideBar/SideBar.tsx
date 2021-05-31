@@ -22,7 +22,9 @@ const useStyles = makeStyles(
       marginLeft: theme.spacing(2)
     },
     float: {
-      position: "fixed"
+      position: "fixed",
+      height: "100vh",
+      overflow: "auto"
     },
     logo: {
       margin: `36px 0 ${theme.spacing(3)}px ${theme.spacing(3)}px`
