@@ -3,6 +3,7 @@ import { COUNTRY_LIST } from "@saleor/country";
 import { FormChange } from "@saleor/hooks/useForm";
 import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
 import { useListStoreTypeQuery } from "@saleor/storesManagement/queries";
+import { makeStyles } from "@saleor/theme";
 import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
@@ -17,9 +18,22 @@ interface Props {
   change: FormChange;
 }
 
+const useStyles = makeStyles(
+  () => ({
+    wrapperUserName: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gridGap: "2rem"
+    }
+  }),
+  {
+    name: "StoreForm"
+  }
+);
+
 const StoreForm: React.FC<Props> = ({ data, change }) => {
   const intl = useIntl();
-
+  const classes = useStyles();
   const lat = data?.latlong ? parseFloat(data.latlong.split(",")[0]) : 0;
   const lng = data?.latlong ? parseFloat(data?.latlong?.split(",")[1]) : 0;
 
@@ -78,16 +92,28 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
 
       <FormSpacer />
 
-      <TextField
-        label={intl.formatMessage({
-          defaultMessage: "User Name"
-        })}
-        fullWidth
-        name="userName"
-        onChange={change}
-        value={data.userName}
-        disabled
-      />
+      <div className={classes.wrapperUserName}>
+        <TextField
+          label={intl.formatMessage({
+            defaultMessage: "First Name"
+          })}
+          fullWidth
+          name="First Name"
+          onChange={change}
+          value={data.userName}
+        />
+
+        <TextField
+          label={intl.formatMessage({
+            defaultMessage: "Last Name"
+          })}
+          fullWidth
+          name="Last Name"
+          onChange={change}
+          value={data.userName}
+        />
+      </div>
+
       <FormSpacer />
       {/* <TextField
         label={intl.formatMessage({
