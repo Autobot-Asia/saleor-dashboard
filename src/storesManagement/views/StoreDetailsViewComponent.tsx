@@ -21,6 +21,7 @@ import {
   storesManagementSection,
   StoreUrlQueryParams
 } from "../urls";
+
 interface IProps {
   id: string;
   params: StoreUrlQueryParams;
@@ -70,9 +71,10 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
         description: JSON.stringify({
           description: data.description
         }),
-        phone: data.phone,
+        phone: data.phoneCode + data.phone,
         latlong: data.latlong
       };
+
       updateStore({
         variables
       });
@@ -119,7 +121,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
         description: JSON.stringify({
           description: data.description
         }),
-        phone: data.phone,
+        phone: data.phoneCode + data.phone,
         country: data.country,
         city: data.city,
         postalCode: data.postalCode,

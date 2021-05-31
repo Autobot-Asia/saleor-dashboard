@@ -4,6 +4,7 @@ import Container from "@saleor/components/Container";
 import Form from "@saleor/components/Form";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import StoreInput from "@saleor/components/StoreManageInput/StoreInput";
+import { COUNTRY_LIST } from "@saleor/country";
 import { sectionNames } from "@saleor/intl";
 import { IStoreForUser } from "@saleor/storesManagement/queries";
 import React from "react";
@@ -39,6 +40,7 @@ export interface StoreDetailVariables {
   description: string;
   storeType: string;
   phone: string;
+  phoneCode: string;
   acreage: number;
   latlong: string;
   userName: string;
@@ -69,6 +71,11 @@ const StoreDetailPage: React.FC<IProps> = ({
     initialValues?.store?.description &&
     initialValues?.store?.description.replace(/'/g, '"');
 
+  const tempPhoneCode =
+    COUNTRY_LIST.find(e => e.value === initialValues?.store.country)?.code ||
+    "";
+
+  const tempPhone = initialValues?.store.phone.replace(tempPhoneCode, "");
   const initialForm: Partial<StoreDetailVariables> = initialValues?.store
     ? {
         name: initialValues.store.name,
@@ -76,7 +83,8 @@ const StoreDetailPage: React.FC<IProps> = ({
           ? JSON.parse(tempDescription)?.description
           : "",
         storeType: initialValues.store.storeType?.id,
-        phone: initialValues.store.phone,
+        phone: tempPhone,
+        phoneCode: tempPhoneCode,
         acreage: initialValues.store.acreage,
         latlong: initialValues.store.latlong,
         userName: initialValues.store.userName,
@@ -91,6 +99,7 @@ const StoreDetailPage: React.FC<IProps> = ({
         description: "",
         storeType: "",
         phone: "",
+        phoneCode: "",
         acreage: 0,
         latlong: "",
         userName: "",

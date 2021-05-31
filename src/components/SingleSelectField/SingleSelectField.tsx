@@ -109,12 +109,12 @@ export const SingleSelectField: React.FC<SingleSelectFieldProps> = props => {
         {...selectProps}
       >
         {choices.length > 0 ? (
-          choices.map(choice => (
+          choices.map((choice, index) => (
             <MenuItem
               data-test="selectFieldOption"
               data-test-id={choice.value}
               value={choice.value}
-              key={choice.value}
+              key={index}
             >
               {choice.label}
             </MenuItem>
