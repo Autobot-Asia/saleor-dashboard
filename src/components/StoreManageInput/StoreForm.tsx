@@ -7,9 +7,11 @@ import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
+import { ChangeEvent } from "src/hooks/useForm";
 
 import FormSpacer from "../FormSpacer";
 import SingleSelectField, { Choices } from "../SingleSelectField";
+
 interface Props {
   data: Partial<StoreDetailVariables>;
   change: FormChange;
@@ -56,6 +58,12 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
     })) || [];
 
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
+
+  const [code, setCode] = React.useState("");
+  React.useEffect(() => {
+    setCode(data.phoneCode);
+  }, [data.phoneCode]);
+
   return (
     <>
       <TextField
@@ -95,7 +103,20 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         choices={countryOptions}
         name="country"
         value={data.country}
-        onChange={change}
+        onChange={e => {
+          const tempPhoneCode =
+            COUNTRY_LIST.find(i => i.value === e.target.value)?.code || "";
+          setCode(tempPhoneCode);
+          // console.log(tempPhoneCode, "-------temppp");
+          const changE: ChangeEvent = {
+            target: {
+              name: "phoneCode",
+              value: tempPhoneCode
+            }
+          };
+          change(changE);
+          change(e);
+        }}
         label={intl.formatMessage({
           defaultMessage: "Country"
         })}
@@ -118,7 +139,12 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         })}
         fullWidth
         name="postalCode"
-        onChange={change}
+        onChange={e => {
+          const isNum = /^\d+$/.test(e.target.value);
+          if (isNum || e.target.value.length === 0) {
+            change(e);
+          }
+        }}
         value={data.postalCode}
       />
       <FormSpacer />
@@ -164,15 +190,33 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
       />
 
       <FormSpacer />
-      <TextField
-        label={intl.formatMessage({
-          defaultMessage: "Phone"
-        })}
-        fullWidth
-        name="phone"
-        onChange={change}
-        value={data.phone}
-      />
+      <div style={{ display: "flex" }}>
+        <TextField
+          disabled
+          label={intl.formatMessage({
+            defaultMessage: "Phone Code"
+          })}
+          name="phoneCode"
+          value={code}
+          onChange={change}
+        />
+
+        <TextField
+          style={{ marginLeft: "0.5rem" }}
+          label={intl.formatMessage({
+            defaultMessage: "Phone"
+          })}
+          fullWidth
+          name="phone"
+          onChange={e => {
+            const isNum = /^\d+$/.test(e.target.value);
+            if (isNum || e.target.value.length === 0) {
+              change(e);
+            }
+          }}
+          value={data.phone}
+        />
+      </div>
       <FormSpacer />
       <TextField
         label={intl.formatMessage({
