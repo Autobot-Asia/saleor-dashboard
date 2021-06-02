@@ -13,7 +13,9 @@ import TablePagination from "@saleor/components/TablePagination";
 import { renderCollection } from "@saleor/misc";
 import React from "react";
 import { FormattedMessage } from "react-intl";
+import { Route, Switch } from "react-router-dom";
 
+import PostDetail from "../PostDetail/PostDetail";
 const numberOfColumns = 5;
 
 const useStyles = makeStyles(
@@ -108,6 +110,9 @@ function PostList(props: any) {
                 selected={isSelected}
                 onClick={post ? onRowClick(post.id) : undefined}
               >
+                <Switch>
+                  <Route exact path="./postDetail" component={PostDetail} />
+                </Switch>
                 <TableCell padding="checkbox">
                   <Checkbox
                     checked={isSelected}
