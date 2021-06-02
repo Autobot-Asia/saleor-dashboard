@@ -16,6 +16,7 @@ import { FormattedMessage } from "react-intl";
 import { Route, Switch } from "react-router-dom";
 
 import PostDetail from "../PostDetail/PostDetail";
+
 const numberOfColumns = 5;
 
 const useStyles = makeStyles(
@@ -102,6 +103,11 @@ function PostList(props: any) {
           posts,
           (post: any) => {
             const isSelected = post ? isChecked(post.id) : false;
+            let tempContent;
+            if (post) {
+              tempContent = post?.content && post?.content.replace(/'/g, '"');
+            }
+
             return (
               <TableRow
                 className={!!post ? classes.tableRow : undefined}
@@ -123,7 +129,7 @@ function PostList(props: any) {
                 </TableCell>
                 <TableCell className={classes.colName}>
                   {/* {getUserName(post)} */}
-                  {post && post.title}
+                  {post && JSON.parse(tempContent)?.content}
                 </TableCell>
                 <TableCell className={classes.colEmail}>
                   {/* {post.content && JSON.parse(post.content).content} */}

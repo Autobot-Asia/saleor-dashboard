@@ -52,9 +52,7 @@ export function getFilterOpts(
   };
 }
 
-export function getFilterVariables(
-  params: StoreListUrlFilters
-): CustomerFilterInput {
+export function getFilterVariables(params: any): CustomerFilterInput {
   return {
     // dateJoined: getGteLteVariables({
     //   gte: params.joinedFrom,

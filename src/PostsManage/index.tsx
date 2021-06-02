@@ -7,8 +7,8 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 
-import PostDetail from "../PostsManage/components/PostDetail/PostDetail";
-import { postAddPath, postListPath } from "./urls";
+import { postAddPath, postListPath, postPath } from "./urls";
+import PostDetailViewComponents from "./views/PostDetailViewComponents";
 import PostListViewComponent from "./views/PostList";
 const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
   const qs = parseQs(location.search.substr(1));
@@ -17,11 +17,16 @@ const StoreListView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
   return <PostListViewComponent params={params} />;
 };
 
-const PostDetailView: React.FC<RouteComponentProps<{}>> = ({ location }) => {
+const PostDetailView: React.FC<RouteComponentProps<any>> = ({ match }) => {
   const qs = parseQs(location.search.substr(1));
   const params: any = asSortParams(qs, CustomerListUrlSortField);
 
-  return <PostDetail params={params} />;
+  return (
+    <PostDetailViewComponents
+      id={decodeURIComponent(match.params.id)}
+      params={params}
+    />
+  );
 };
 
 function PostSection() {
@@ -31,7 +36,7 @@ function PostSection() {
       <WindowTitle title={intl.formatMessage(sectionNames.posts)} />
       <Switch>
         <Route exact path={postAddPath} component={PostDetailView} />
-
+        <Route exact path={postPath(":id")} component={PostDetailView} />
         {/* <Route exact path={storeListPath} component={StoreListView} />
           <Route exact path={storeAddPath} component={StoreCreateView} />
           <Route exact path={storePath(":id")} component={DetailStoreView} /> */}

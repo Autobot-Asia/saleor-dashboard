@@ -31,4 +31,7 @@ export type PostUrlQueryParams = Dialog<PostUrlDialog>;
 export const postUrl = (id: string, params?: PostUrlQueryParams) =>
   postPath(encodeURIComponent(id)) + "?" + stringifyQs(params);
 
+export const postListUrl = (params?: PostListUrlQueryParams) =>
+  postListPath + "?" + stringifyQs(params);
+
 export const postAddPath = urljoin(postsManagementSection, "add");
