@@ -158,34 +158,9 @@ const PostMedia: React.FC<PageCarouselProps> = props => {
   const classes = useStyles(props);
   const intl = useIntl();
   const imagesUpload = React.useRef<HTMLInputElement>(null);
-  //   const [imagesToUpload, setImagesToUpload] = React.useState<
-  //     PostMediaFragment[]
-  //   >([]);
 
   const handleImageUploadButtonClick = () => imagesUpload.current.click();
 
-  // const handleImageUpload = createMultiFileUploadHandler(onImageUpload, {
-  //   onAfterUpload: () =>
-  //     setImagesToUpload(prevImagesToUpload => prevImagesToUpload.slice(1)),
-  //   onStart: files => {
-  //     Array.from(files).forEach((file, fileIndex) => {
-  //       const reader = new FileReader();
-  //       reader.onload = event => {
-  //         setImagesToUpload(prevImagesToUpload => [
-  //           ...prevImagesToUpload,
-  //           {
-  //             __typename: "PostMedia",
-  //             alt: "",
-  //             id: "",
-  //             sortOrder: fileIndex,
-  //             url: event.target.result as string
-  //           }
-  //         ]);
-  //       };
-  //       reader.readAsDataURL(file);
-  //     });
-  //   }
-  // });
   const handleImageUpload = files => {
     Array.from(files).forEach((file, fileIndex) => {
       const reader = new FileReader();

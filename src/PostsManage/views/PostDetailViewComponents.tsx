@@ -16,35 +16,6 @@ function PostDetailViewComponents({ id }: any) {
   const intl = useIntl();
 
   const [rerender, setRerender] = React.useState(false);
-  // const handleSubmit = (data: any) => {
-  //   const variables: any = {};
-  //   // createStore({
-  //   //   variables
-  //   // });
-  // };
-  // let countImage: number = 0;
-
-  // const createImageUploadHandler = (
-  //   id: string,
-  //   createCarouselImage: (variables: any) => void
-  // ) => (file: File) => {
-  //   countImage++;
-  //   if (countImage <= 5) {
-  //     createCarouselImage({
-  //       alt: "",
-  //       image: file,
-  //       page: id
-  //     });
-  //   } else {
-  //     notify({
-  //       status: "error",
-  //       text: intl.formatMessage({
-  //         defaultMessage: "You can upload maximum 5 images!"
-  //       })
-  //     });
-  //   }
-  //   setRerender(true);
-  // };
 
   const [createPostMedia] = usePostMediaCreateMutation({
     onCompleted: data => {
@@ -63,45 +34,52 @@ function PostDetailViewComponents({ id }: any) {
     }
   });
 
-  // const handleImageUpload = createImageUploadHandler(id, variables =>
-  //   createPostMedia({ variables })
-  // );
+  // setRerender(true);
+
+  // deletePageCarouselImage({
+  //   variables: { mediaId: id, isActive: false, alt: "" }
+  // });
 
   return (
     <>
       <WindowTitle title="Post" />
-      <TypedListMedia displayLoader={false}>
-        {({ data, refetch }) => {
-          if (rerender) {
-            refetch();
-            setRerender(false);
-          }
-          const dataMedia =
-            data &&
-            data.pages?.edges?.reduce((acc, key) => {
-              if (key.node.id !== id) {
-                return acc;
-              }
-              const listImage = key.node.media.map(item => ({
+      {id !== "undefined" ? (
+        <TypedListMedia displayLoader={false} variables={{ id }}>
+          {({ data, refetch }) => {
+            if (rerender) {
+              refetch();
+              setRerender(false);
+            }
+            const dataMedia =
+              data &&
+              data.post?.media.map(item => ({
                 ...item,
-                image: `http://thachsanh.store:8080/media/${item.image}`
+                url: `http://thachsanh.store:8080/media/${item.image}`
               }));
 
-              return [...acc, ...listImage];
-            }, []);
-
-          return (
-            <PostDetail
-              onBack={() => navigate(postsManagementSection)}
-              // onSubmit={handleSubmit}
-              placeholderImage={placeholderImg}
-              carousel={dataMedia}
-              onImageUpload={createPostMedia}
-              onImageDelete={() => null}
-            />
-          );
-        }}
-      </TypedListMedia>
+            return (
+              <PostDetail
+                onBack={() => navigate(postsManagementSection)}
+                placeholderImage={placeholderImg}
+                carousel={dataMedia}
+                onImageUpload={createPostMedia}
+                // onImageDelete={handleImageDelete}
+                post={id && data?.post}
+                id={id}
+              />
+            );
+          }}
+        </TypedListMedia>
+      ) : (
+        <PostDetail
+          onBack={() => navigate(postsManagementSection)}
+          placeholderImage={placeholderImg}
+          carousel={[]}
+          onImageUpload={createPostMedia}
+          onImageDelete={() => null}
+          id={id}
+        />
+      )}
     </>
   );
 }

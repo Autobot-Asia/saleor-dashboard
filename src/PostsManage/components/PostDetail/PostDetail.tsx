@@ -14,16 +14,16 @@ import { postsManagementSection } from "@saleor/PostsManage/urls";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { usePostCreateMutation } from "../../queries";
+import { usePostCreateMutation, usePostUpdateMutation } from "../../queries";
 import PostMedia from "../PostMedia";
 
 function PostDetail({
-  // onBack,
-  // onSubmit,
+  post,
   placeholderImage,
   carousel,
   onImageUpload,
-  onImageDelete
+  // onImageDelete,
+  id
 }: any) {
   const navigate = useNavigator();
   const intl = useIntl();
@@ -32,7 +32,17 @@ function PostDetail({
     PostMediaFragment[]
   >([]);
 
+  const [tempImgDelete, setTempImgDelete] = React.useState([]);
+
   const [content, setContent] = React.useState("");
+
+  React.useEffect(() => {
+    if (post) {
+      const tempContent = post?.content && post?.content.replace(/'/g, '"');
+      setContent(JSON.parse(tempContent).content);
+    }
+    setImagesToUpload(carousel);
+  }, [post]);
 
   const [createPost] = usePostCreateMutation({
     onCompleted: data => {
@@ -58,16 +68,64 @@ function PostDetail({
     }
   });
 
+  const [updatePost] = usePostUpdateMutation({
+    onCompleted: data => {
+      const id = data?.postUpdate?.post?.id;
+      Promise.all(
+        imagesToUpload.map(item => {
+          if (tempImgDelete.indexOf(item.id) > 0) {
+            //  delete here
+          }
+          if (item.image.name) {
+            onImageUpload({
+              variables: {
+                post: id,
+                ...item,
+                image: item && item.image
+              }
+            });
+          }
+        })
+      );
+      if (data.postCreate.postErrors.length === 0) {
+        notify({
+          status: "success",
+          text: intl.formatMessage(commonMessages.savedChanges)
+        });
+        navigate(postsManagementSection);
+      }
+    }
+  });
+
   const handleSubmit = e => {
     e.preventDefault();
-    createPost({
-      variables: {
-        title: "title",
-        content: JSON.stringify({ content }),
-        store: ""
-      }
-    });
+    if (id !== "undefined") {
+      updatePost({
+        variables: {
+          id,
+          input: {
+            title: "title",
+            content: JSON.stringify({ content }),
+            store: ""
+          }
+        }
+      });
+    } else {
+      createPost({
+        variables: {
+          title: "title",
+          content: JSON.stringify({ content }),
+          store: ""
+        }
+      });
+    }
+
     // onSubmit();
+  };
+
+  const handleImageDelete = (id?: string) => () => {
+    tempImgDelete.push(id);
+    setTempImgDelete([...tempImgDelete]);
   };
 
   return (
@@ -87,9 +145,9 @@ function PostDetail({
               rows={5}
             />
             <PostMedia
-              carousel={carousel}
+              carousel={imagesToUpload}
               placeholderImage={placeholderImage}
-              onImageDelete={onImageDelete}
+              onImageDelete={handleImageDelete}
               // onImageUpload={onImageUpload}
               imagesToUpload={imagesToUpload}
               setImagesToUpload={setImagesToUpload}

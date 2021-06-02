@@ -17,7 +17,7 @@ import { Route, Switch } from "react-router-dom";
 
 import PostDetail from "../PostDetail/PostDetail";
 
-const numberOfColumns = 5;
+const numberOfColumns = 3;
 
 const useStyles = makeStyles(
   theme => ({
@@ -73,12 +73,7 @@ function PostList(props: any) {
         <TableCellHeader arrowPosition="right" className={classes.colName}>
           <FormattedMessage defaultMessage="Title" />
         </TableCellHeader>
-        <TableCellHeader arrowPosition="right" className={classes.colName}>
-          <FormattedMessage defaultMessage="Content" />
-        </TableCellHeader>
-        <TableCellHeader className={classes.colEmail}>
-          <FormattedMessage defaultMessage="Content" />
-        </TableCellHeader>
+
         <TableCellHeader textAlign="center" className={classes.colOrders}>
           <FormattedMessage defaultMessage="Joined date" />
         </TableCellHeader>
@@ -131,16 +126,7 @@ function PostList(props: any) {
                   {/* {getUserName(post)} */}
                   {post && JSON.parse(tempContent)?.content}
                 </TableCell>
-                <TableCell className={classes.colEmail}>
-                  {/* {post.content && JSON.parse(post.content).content} */}
-                  {/* {maybe<React.ReactNode>(() => post.email, <Skeleton />)} */}
-                </TableCell>
-                <TableCell className={classes.colOrders}>
-                  {/* {maybe<React.ReactNode>(
-                    () => post.orders.totalCount,
-                    <Skeleton />
-                  )} */}
-                </TableCell>
+
                 <TableCell className={classes.colOrders}>
                   {/* {post && formatDate(post.dateJoined)} */}
                 </TableCell>

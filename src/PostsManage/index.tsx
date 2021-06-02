@@ -35,13 +35,13 @@ function PostSection() {
     <>
       <WindowTitle title={intl.formatMessage(sectionNames.posts)} />
       <Switch>
+        <Route exact path={postListPath} component={StoreListView} />
         <Route exact path={postAddPath} component={PostDetailView} />
         <Route exact path={postPath(":id")} component={PostDetailView} />
         {/* <Route exact path={storeListPath} component={StoreListView} />
           <Route exact path={storeAddPath} component={StoreCreateView} />
           <Route exact path={storePath(":id")} component={DetailStoreView} /> */}
       </Switch>
-      <Route exact path={postListPath} component={StoreListView} />
     </>
   );
 }

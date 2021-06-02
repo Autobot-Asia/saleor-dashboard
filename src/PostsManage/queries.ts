@@ -39,41 +39,17 @@ export const usePostListQuery = makeQuery<ListPosts, ListPostsVariables>(
   listPost
 );
 
-//
-
-// const createPost = gql`
-//   mutation CreatePost($title: String, $content: JSONString, $store: ID!) {
-//     postCreate(input: { title: $title, content: $content, store: $store }) {
-//       postErrors {
-//         field
-//         message
-//       }
-//       post {
-//         title
-//         content
-//         media {
-//           image
-//         }
-//       }
-//     }
-//   }
-// `;
-
-// export const TypedPostCreate = TypedMutation<any, any>(createPost);
-
 // list media post
 const getListMedia = gql`
-  query posts {
-    pages(first: 10) {
-      edges {
-        node {
-          id
-          media {
-            isActive
-            id
-            image
-          }
-        }
+  query posts($id: ID) {
+    post(id: $id) {
+      id
+      title
+      content
+      media {
+        id
+        image
+        alt
       }
     }
   }
@@ -129,3 +105,22 @@ export const deletePostMutation = gql`
   }
 `;
 export const usePostDeleteMutation = makeMutation<any, any>(deletePostMutation);
+
+// createPost Media
+export const postUpdateMutation = gql`
+  mutation updatePost($id: ID!, $input: PostInput!) {
+    postUpdate(id: $id, input: $input) {
+      postErrors {
+        message
+      }
+      post {
+        id
+        media {
+          id
+          image
+        }
+      }
+    }
+  }
+`;
+export const usePostUpdateMutation = makeMutation<any, any>(postUpdateMutation);
