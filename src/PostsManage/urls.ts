@@ -16,7 +16,7 @@ export const postsManagementListUrl = (params?: any) =>
 
 export const postPath = (id: string) => urljoin(postsManagementSection, id);
 
-export type PostUrlDialog = "remove";
+export type PostUrlDialog = "delete";
 
 export type PostListUrlQueryParams = ActiveTab &
   BulkAction &
@@ -25,7 +25,7 @@ export type PostListUrlQueryParams = ActiveTab &
   Dialog<PostsListUrlDialog> &
   Pagination;
 
-export type PostsListUrlDialog = "remove" | TabActionDialog;
+export type PostsListUrlDialog = "delete" | TabActionDialog;
 
 export type PostUrlQueryParams = Dialog<PostUrlDialog>;
 export const postUrl = (id: string, params?: PostUrlQueryParams) =>

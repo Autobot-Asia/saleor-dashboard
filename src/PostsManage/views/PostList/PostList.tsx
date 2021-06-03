@@ -1,5 +1,7 @@
+import { DialogContentText } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ActionDialog from "@saleor/components/ActionDialog";
 import { DEFAULT_INITIAL_PAGINATION_DATA } from "@saleor/config";
 import useBulkActions from "@saleor/hooks/useBulkActions";
 import useListSettings from "@saleor/hooks/useListSettings";
@@ -30,7 +32,7 @@ import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandl
 import createSortHandler from "@saleor/utils/handlers/sortHandler";
 import { getSortParams } from "@saleor/utils/sort";
 import React from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface IProps {
   params: any;
@@ -71,7 +73,7 @@ function PostList({ params }: IProps) {
     variables: queryVariables
   });
 
-  const [openModal] = createDialogActionHandlers<
+  const [openModal, closeModal] = createDialogActionHandlers<
     PostsListUrlDialog,
     PostListUrlQueryParams
   >(navigate, postsManagementListUrl, params);
@@ -123,7 +125,6 @@ function PostList({ params }: IProps) {
   return (
     <>
       <PostListPage
-        isChecked={isSelected}
         disabled={loading}
         posts={maybe(() => (data.posts.edges || []).map(edge => edge.node))}
         onRowClick={id => () => navigate(postUrl(id))}
@@ -132,17 +133,11 @@ function PostList({ params }: IProps) {
         onPreviousPage={loadPreviousPage}
         pageInfo={pageInfo}
         toolbar={
-          <IconButton
-            color="primary"
-            onClick={() =>
-              openModal("remove", {
-                ids: listElements
-              })
-            }
-          >
-            <DeleteIcon onClick={handleDelete} />
+          <IconButton color="primary" onClick={() => openModal("delete")}>
+            <DeleteIcon />
           </IconButton>
         }
+        isChecked={isSelected}
         selected={listElements.length}
         toggle={toggle}
         sort={getSortParams(params)}
@@ -151,6 +146,29 @@ function PostList({ params }: IProps) {
         onUpdateListSettings={updateListSettings}
         settings={settings}
       />
+
+      <ActionDialog
+        open={params.action === "delete"}
+        confirmButtonState={"default"}
+        onClose={closeModal}
+        onConfirm={handleDelete}
+        title={intl.formatMessage({
+          defaultMessage: "Delete Post",
+          description: "dialog header"
+        })}
+        variant="delete"
+      >
+        <DialogContentText>
+          <FormattedMessage
+            defaultMessage="{counter,plural,one{Are you sure you want to delete this product?} other{Are you sure you want to delete {displayQuantity} products?}}"
+            description="dialog content"
+            values={{
+              counter: params?.ids?.length,
+              displayQuantity: <strong>{params?.ids?.length}</strong>
+            }}
+          />
+        </DialogContentText>
+      </ActionDialog>
     </>
   );
 }
