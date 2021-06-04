@@ -1,14 +1,17 @@
 import AppHeader from "@saleor/components/AppHeader";
 import { ConfirmButtonTransitionState } from "@saleor/components/ConfirmButton";
 import Container from "@saleor/components/Container";
-import Form from "@saleor/components/Form";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import StoreInput from "@saleor/components/StoreManageInput/StoreInput";
 import { COUNTRY_LIST } from "@saleor/country";
 import { sectionNames } from "@saleor/intl";
 import { IStoreForUser } from "@saleor/storesManagement/queries";
+import { Formik } from "formik";
 import React from "react";
+import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
+import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
+import * as yup from "yup";
 
 interface IProps {
   disabled?: boolean;
@@ -61,11 +64,11 @@ const StoreDetailPage: React.FC<IProps> = ({
   initialValues,
   onBack,
   saveButtonBarState,
-  onSubmit,
-  disabled,
-  storeId
+  storeId,
+  onSubmit
 }) => {
   const intl = useIntl();
+  const [latlng, setlatlng] = React.useState(`0,0`);
 
   const tempDescription =
     initialValues?.store?.description &&
@@ -74,9 +77,8 @@ const StoreDetailPage: React.FC<IProps> = ({
   const tempPhoneCode =
     COUNTRY_LIST.find(e => e.value === initialValues?.store.country)?.code ||
     "";
-
   const tempPhone = initialValues?.store.phone.replace(tempPhoneCode, "");
-  const initialForm: Partial<StoreDetailVariables> = initialValues?.store
+  const initialForm: Partial<any> = initialValues?.store
     ? {
         name: initialValues.store.name,
         description: tempDescription
@@ -96,56 +98,120 @@ const StoreDetailPage: React.FC<IProps> = ({
       }
     : {
         name: "",
-        description: "",
-        storeType: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        country: "",
         phone: "",
         phoneCode: "",
-        acreage: 0,
-        latlong: "",
-        userName: "",
-        country: "",
+        storeType: "",
         city: "",
         postalCode: "",
+        description: "",
         streetAddress1: "",
-        streetAddress2: ""
+        streetAddress2: "",
+        acreage: 0,
+        latlong: latlng
       };
 
-  return (
-    <Form onSubmit={onSubmit} initial={initialForm}>
-      {({ change, data, hasChanged, submit }) => {
-        const disableSubmit =
-          !hasChanged ||
-          disabled ||
-          data.name.length === 0 ||
-          data.storeType.length === 0 ||
-          data.phone.length === 0;
-        return (
-          <Container>
-            <AppHeader onBack={onBack}>
-              {storeId
-                ? intl.formatMessage(sectionNames.stores)
-                : intl.formatMessage(sectionNames.listStore)}
-            </AppHeader>
+  const validateSchema = yup.object().shape({
+    name: yup.string().required("Required!"),
+    firstName: yup.string().required("Required!"),
+    lastName: yup.string().required("Required!"),
+    email: yup
+      .string()
+      .required("Required!")
+      .email("Invalid Email!"),
+    password: yup
+      .string()
+      .required("Required!")
+      .min(8, "Too Short!"),
+    country: yup.string().required("Required!"),
+    phone: yup.string().required("Required!"),
+    storeType: yup.string().required("Required!")
+  });
 
-            <StoreInput
-              header={intl.formatMessage({
-                defaultMessage: "Store Information",
-                description: "section header"
-              })}
-              data={data}
-              change={change}
-            />
+  const lat = initialForm?.latlong
+    ? parseFloat(initialForm.latlong.split(",")[0])
+    : 0;
+  const lng = initialForm?.latlong
+    ? parseFloat(initialForm?.latlong?.split(",")[1])
+    : 0;
+
+  const [position, setPosition] = React.useState({ lat, lng });
+
+  const Map = props => (
+    <GoogleMap
+      defaultZoom={15}
+      defaultCenter={position}
+      onClick={e => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        setlatlng(`${lat},${lng}`);
+        setPosition({ lat, lng });
+        props.setFieldValue(`${lat},${lng}`);
+      }}
+    >
+      <Marker position={position} />
+    </GoogleMap>
+  );
+  const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
+
+  return (
+    <Container>
+      <AppHeader onBack={onBack}>
+        {storeId
+          ? intl.formatMessage(sectionNames.stores)
+          : intl.formatMessage(sectionNames.listStore)}
+      </AppHeader>
+      <Formik
+        initialValues={initialForm}
+        validationSchema={validateSchema}
+        onSubmit={values => {
+          onSubmit(values);
+        }}
+      >
+        {({
+          values,
+          handleChange,
+          setFieldValue,
+          handleSubmit,
+          ...formikProps
+        }) => (
+          <>
+            <form>
+              <StoreInput
+                {...formikProps}
+                header={intl.formatMessage({
+                  defaultMessage: "Store Information",
+                  description: "section header"
+                })}
+                values={values}
+                handleChange={handleChange}
+              />
+
+              <WrappedMap
+                name="latlong"
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ width: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+                setFieldValue={data => setFieldValue("latlong", data)}
+                // onClick={() => setFieldValue("latlong", latlong)}
+              />
+            </form>
 
             <SaveButtonBar
               state={saveButtonBarState}
-              disabled={disableSubmit}
+              disabled={false}
               onCancel={onBack}
-              onSave={submit}
+              onSave={handleSubmit}
             />
-          </Container>
-        );
-      }}
-    </Form>
+          </>
+        )}
+      </Formik>
+    </Container>
   );
 };
 

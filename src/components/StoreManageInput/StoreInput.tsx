@@ -8,15 +8,20 @@ import StoreForm from "./StoreForm";
 
 interface IProps {
   header: string;
-  change: FormChange;
-  data: Partial<StoreDetailVariables>;
+  handleChange: FormChange;
+  values: Partial<StoreDetailVariables>;
 }
 
-const StoreInput: React.FC<IProps> = ({ header, data, change }) => (
+const StoreInput: React.FC<IProps> = ({
+  header,
+  values,
+  handleChange,
+  ...formikProps
+}) => (
   <Card>
     <CardTitle title={header} />
     <CardContent>
-      <StoreForm data={data} change={change} />
+      <StoreForm {...formikProps} values={values} handleChange={handleChange} />
     </CardContent>
   </Card>
 );

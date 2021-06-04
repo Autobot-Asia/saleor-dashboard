@@ -87,7 +87,7 @@ function PostDetail({
           }
         })
       );
-      if (data.postCreate.postErrors.length === 0) {
+      if (data.postUpdate.postErrors.length === 0) {
         notify({
           status: "success",
           text: intl.formatMessage(commonMessages.savedChanges)
@@ -105,8 +105,7 @@ function PostDetail({
           id,
           input: {
             title: "title",
-            content: JSON.stringify({ content }),
-            store: ""
+            content: JSON.stringify({ content })
           }
         }
       });

@@ -59,6 +59,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
 
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
       const variables: UpdateStoreVariables = {
+        // add more fields here
         name: data.name,
         id,
         country: data.country,

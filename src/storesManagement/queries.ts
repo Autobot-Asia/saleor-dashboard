@@ -194,6 +194,10 @@ export const storeForUser = gql`
 
 export interface IStoreForUser {
   store: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
     id: string;
     name: string;
     userName?: string;

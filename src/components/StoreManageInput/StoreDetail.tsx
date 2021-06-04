@@ -56,8 +56,12 @@ function StoreDetail({ store }: IProps) {
   const Mapping = storeInfo
     ? {
         name: { title: "Store Name:", value: storeInfo.name || "" },
+        firstName: { title: "First Name:", value: storeInfo.firstName || "" },
+        email: { title: "Email:", value: storeInfo.email || "" },
+        password: { title: "Password:", value: storeInfo.password },
+        lastName: { title: "Last Name:", value: storeInfo.lastName || "" },
         userName: { title: "User Name:", value: storeInfo.userName || "" },
-        // email: { title: "Email:", value: storeInfo.email },
+
         country: { title: "Country:", value: storeInfo.country || "" },
         city: { title: "City:", value: storeInfo.city || "" },
         phone: { title: "Phone:", value: storeInfo.phone || "" },

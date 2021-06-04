@@ -1,11 +1,8 @@
 import { TextField } from "@material-ui/core";
 import { COUNTRY_LIST } from "@saleor/country";
 import { FormChange } from "@saleor/hooks/useForm";
-import { StoreDetailVariables } from "@saleor/storesManagement/components/StoreDetailPage/StoreDetailPage";
 import { useListStoreTypeQuery } from "@saleor/storesManagement/queries";
 import React from "react";
-import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
-import Marker from "react-google-maps/lib/components/Marker";
 import { useIntl } from "react-intl";
 import { ChangeEvent } from "src/hooks/useForm";
 
@@ -13,33 +10,19 @@ import FormSpacer from "../FormSpacer";
 import SingleSelectField, { Choices } from "../SingleSelectField";
 
 interface Props {
-  data: Partial<StoreDetailVariables>;
-  change: FormChange;
+  values: Partial<any>;
+  handleChange: FormChange;
+  formikProps?: any;
 }
 
-const StoreForm: React.FC<Props> = ({ data, change }) => {
+const StoreForm: React.FC<Props> = ({
+  values,
+  handleChange,
+  ...formikProps
+}) => {
+  const { errors, touched, handleBlur }: any = formikProps;
+
   const intl = useIntl();
-
-  const lat = data?.latlong ? parseFloat(data.latlong.split(",")[0]) : 0;
-  const lng = data?.latlong ? parseFloat(data?.latlong?.split(",")[1]) : 0;
-
-  const position = {
-    lat,
-    lng
-  };
-  const Map = () => (
-    <GoogleMap
-      defaultZoom={15}
-      defaultCenter={position}
-      onClick={e => {
-        const lat = e.latLng.lat();
-        const lng = e.latLng.lng();
-        change({ target: { name: "latlong", value: `${lat},${lng}` } });
-      }}
-    >
-      <Marker position={position} />
-    </GoogleMap>
-  );
 
   const { data: dataType } = useListStoreTypeQuery({
     displayLoader: true,
@@ -57,69 +40,109 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
       label: item.node.name
     })) || [];
 
-  const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
-
   const [code, setCode] = React.useState("");
   React.useEffect(() => {
-    setCode(data.phoneCode);
-  }, [data.phoneCode]);
-
+    setCode(values.phoneCode);
+  }, [values.phoneCode]);
   return (
     <>
       <TextField
         label={intl.formatMessage({
-          defaultMessage: "Store Name"
+          defaultMessage: "Store Name*"
         })}
         fullWidth
         name="name"
-        value={data.name}
-        onChange={change}
+        value={values.name}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.name && touched.name}
+        helperText={errors.name && touched.name && errors.name}
       />
+
+      <FormSpacer />
+      <div style={{ display: "flex" }}>
+        <TextField
+          style={{ flex: 1 }}
+          label={intl.formatMessage({
+            defaultMessage: "First Name*"
+          })}
+          name="firstName"
+          value={values.firstName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.firstName && touched.firstName}
+          helperText={errors.firstName && touched.firstName && errors.firstName}
+        />
+
+        <TextField
+          style={{ marginLeft: "0.5rem", flex: 1 }}
+          label={intl.formatMessage({
+            defaultMessage: "Last Name*"
+          })}
+          fullWidth
+          name="lastName"
+          onChange={handleChange}
+          value={values.lastName}
+          onBlur={handleBlur}
+          error={errors.lastName && touched.lastName}
+          helperText={errors.lastName && touched.lastName && errors.lastName}
+        />
+      </div>
 
       <FormSpacer />
 
       <TextField
         label={intl.formatMessage({
-          defaultMessage: "User Name"
-        })}
-        fullWidth
-        name="userName"
-        onChange={change}
-        value={data.userName}
-        disabled
-      />
-      <FormSpacer />
-      {/* <TextField
-        label={intl.formatMessage({
-          defaultMessage: "Email Address"
+          defaultMessage: "Email Address*"
         })}
         fullWidth
         name="email"
-        onChange={change}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.email && touched.email}
+        helperText={errors.email && touched.email && errors.email}
       />
-      <FormSpacer /> */}
+      <FormSpacer />
+
+      <TextField
+        label={intl.formatMessage({
+          defaultMessage: "Password*"
+        })}
+        fullWidth
+        name="password"
+        type="password"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={errors.password && touched.password}
+        helperText={errors.password && touched.password && errors.password}
+      />
+      <FormSpacer />
 
       <SingleSelectField
         choices={countryOptions}
         name="country"
-        value={data.country}
+        value={values.country}
         onChange={e => {
           const tempPhoneCode =
             COUNTRY_LIST.find(i => i.value === e.target.value)?.code || "";
-          setCode(tempPhoneCode);
-          // console.log(tempPhoneCode, "-------temppp");
+          // setCode(tempPhoneCode);
           const changE: ChangeEvent = {
             target: {
               name: "phoneCode",
               value: tempPhoneCode
             }
           };
-          change(changE);
-          change(e);
+          // change(changE);
+          // change(e);
+          handleChange(e);
+          handleChange(changE);
         }}
         label={intl.formatMessage({
-          defaultMessage: "Country"
+          defaultMessage: "Country*"
         })}
+        onBlur={handleBlur}
+        error={errors.country && touched.country}
+        hint={errors.country && touched.country && errors.country}
       />
 
       <FormSpacer />
@@ -129,8 +152,8 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         })}
         fullWidth
         name="city"
-        onChange={change}
-        value={data.city}
+        onChange={handleChange}
+        value={values.city}
       />
       <FormSpacer />
       <TextField
@@ -142,10 +165,10 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         onChange={e => {
           const isNum = /^\d+$/.test(e.target.value);
           if (isNum || e.target.value.length === 0) {
-            change(e);
+            handleChange(e);
           }
         }}
-        value={data.postalCode}
+        value={values.postalCode}
       />
       <FormSpacer />
       <TextField
@@ -154,8 +177,8 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         })}
         fullWidth
         name="streetAddress1"
-        onChange={change}
-        value={data.streetAddress1}
+        onChange={handleChange}
+        value={values.streetAddress1}
       />
       <FormSpacer />
       <TextField
@@ -164,8 +187,8 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         })}
         fullWidth
         name="streetAddress2"
-        onChange={change}
-        value={data.streetAddress2}
+        onChange={handleChange}
+        value={values.streetAddress2}
       />
       <FormSpacer />
       <TextField
@@ -173,20 +196,23 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
           defaultMessage: "Store Description"
         })}
         fullWidth
-        value={data.description}
+        value={values.description}
         name="description"
-        onChange={change}
+        onChange={handleChange}
       />
       <FormSpacer />
 
       <SingleSelectField
         choices={typeOptions}
         name="storeType"
-        value={data.storeType}
-        onChange={change}
+        value={values.storeType}
+        onChange={handleChange}
         label={intl.formatMessage({
           defaultMessage: "Store Type"
         })}
+        onBlur={handleBlur}
+        error={errors.storeType && touched.storeType}
+        hint={errors.storeType && touched.storeType && errors.storeType}
       />
 
       <FormSpacer />
@@ -198,23 +224,26 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
           })}
           name="phoneCode"
           value={code}
-          onChange={change}
+          onChange={handleChange}
         />
 
         <TextField
           style={{ marginLeft: "0.5rem" }}
           label={intl.formatMessage({
-            defaultMessage: "Phone"
+            defaultMessage: "Phone*"
           })}
           fullWidth
           name="phone"
           onChange={e => {
             const isNum = /^\d+$/.test(e.target.value);
             if (isNum || e.target.value.length === 0) {
-              change(e);
+              handleChange(e);
             }
           }}
-          value={data.phone}
+          value={values.phone}
+          onBlur={handleBlur}
+          error={errors.phone && touched.phone}
+          helperText={errors.phone && touched.phone && errors.phone}
         />
       </div>
       <FormSpacer />
@@ -225,17 +254,10 @@ const StoreForm: React.FC<Props> = ({ data, change }) => {
         fullWidth
         type="number"
         name="acreage"
-        value={data.acreage}
-        onChange={change}
+        value={values.acreage}
+        onChange={handleChange}
       />
       <FormSpacer />
-      <WrappedMap
-        name="latlong"
-        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe38lpcvEH7pLWIbgNUPNHsPnyIYwkc60&v=3.exp&libraries=geometry,drawing,places"
-        loadingElement={<div style={{ width: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-      />
       <FormSpacer />
     </>
   );

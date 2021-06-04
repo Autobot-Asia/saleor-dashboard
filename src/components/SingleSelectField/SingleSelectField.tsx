@@ -47,6 +47,7 @@ interface SingleSelectFieldProps {
   placeholder?: string;
   value?: string;
   InputProps?: InputProps;
+  onBlur?: any;
   onChange(event: any);
 }
 
@@ -64,7 +65,8 @@ export const SingleSelectField: React.FC<SingleSelectFieldProps> = props => {
     selectProps,
     placeholder,
     InputProps,
-    testId
+    testId,
+    onBlur
   } = props;
   const classes = useStyles(props);
 
@@ -94,6 +96,7 @@ export const SingleSelectField: React.FC<SingleSelectFieldProps> = props => {
         }
         value={value || ""}
         onChange={onChange}
+        onBlur={onBlur}
         input={
           <OutlinedInput
             classes={{
@@ -129,7 +132,7 @@ export const SingleSelectField: React.FC<SingleSelectFieldProps> = props => {
           </MenuItem>
         )}
       </Select>
-      {hint && <FormHelperText>{hint}</FormHelperText>}
+      {error && <FormHelperText>{hint}</FormHelperText>}
     </FormControl>
   );
 };
