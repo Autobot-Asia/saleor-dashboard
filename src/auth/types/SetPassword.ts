@@ -32,6 +32,7 @@ export interface SetPassword_setPassword_user {
   email: string;
   firstName: string;
   lastName: string;
+  isSupplier?: boolean;
   isStaff: boolean;
   userPermissions: (SetPassword_setPassword_user_userPermissions | null)[] | null;
   avatar: SetPassword_setPassword_user_avatar | null;

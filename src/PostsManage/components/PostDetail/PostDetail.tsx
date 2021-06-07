@@ -39,11 +39,13 @@ function PostDetail({
   const [tempImgDelete, setTempImgDelete] = React.useState([]);
 
   const [content, setContent] = React.useState("");
+  const [title, setTitle] = React.useState("");
 
   React.useEffect(() => {
     if (post) {
       const tempContent = post?.content && post?.content.replace(/'/g, '"');
       setContent(JSON.parse(tempContent).content);
+      setTitle(post?.title);
     }
     setImagesToUpload(carousel);
   }, [post]);
@@ -103,12 +105,26 @@ function PostDetail({
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (title === "") {
+      notify({
+        status: "error",
+        text: "Title is Require"
+      });
+      return;
+    }
+    if (imagesToUpload.length === 0 && content === "") {
+      notify({
+        status: "error",
+        text: "Carousel or content is not blank!"
+      });
+      return;
+    }
     if (id !== "undefined") {
       updatePost({
         variables: {
           id,
           input: {
-            title: "title",
+            title,
             content: JSON.stringify({ content })
           }
         }
@@ -116,7 +132,7 @@ function PostDetail({
     } else {
       createPost({
         variables: {
-          title: "title",
+          title,
           content: JSON.stringify({ content }),
           store: ""
         }
@@ -140,6 +156,15 @@ function PostDetail({
         <CardTitle title={"Post Manage"} />
         <CardContent>
           <form onSubmit={handleSubmit}>
+            <TextField
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              fullWidth
+              label={intl.formatMessage({
+                defaultMessage: "title"
+              })}
+            />
+            <FormSpacer />
             <TextField
               value={content}
               onChange={e => setContent(e.target.value)}

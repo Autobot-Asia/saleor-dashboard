@@ -160,7 +160,7 @@ function PostList({ params }: IProps) {
       >
         <DialogContentText>
           <FormattedMessage
-            defaultMessage="{counter,plural,one{Are you sure you want to delete this product?} other{Are you sure you want to delete {displayQuantity} products?}}"
+            defaultMessage="{counter,plural,one{Are you sure you want to delete ?} other{Are you sure you want to delete {displayQuantity} posts?}}"
             description="dialog content"
             values={{
               counter: params?.ids?.length,

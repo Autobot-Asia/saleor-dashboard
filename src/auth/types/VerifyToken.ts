@@ -26,6 +26,7 @@ export interface VerifyToken_tokenVerify_user {
   email: string;
   firstName: string;
   lastName: string;
+  isSupplier?: boolean;
   isStaff: boolean;
   userPermissions: (VerifyToken_tokenVerify_user_userPermissions | null)[] | null;
   avatar: VerifyToken_tokenVerify_user_avatar | null;

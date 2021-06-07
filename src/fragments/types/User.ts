@@ -27,6 +27,7 @@ export interface User {
   firstName: string;
   lastName: string;
   isStaff: boolean;
+  isSupplier?: boolean;
   userPermissions: (User_userPermissions | null)[] | null;
   avatar: User_avatar | null;
 }

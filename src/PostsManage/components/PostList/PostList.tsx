@@ -32,8 +32,11 @@ const useStyles = makeStyles(
     colName: {
       paddingLeft: 0
     },
-    colOrders: {
-      textAlign: "center"
+    colContent: {
+      width: 700,
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
     },
     tableRow: {
       cursor: "pointer"
@@ -72,6 +75,10 @@ function PostList(props: any) {
       >
         <TableCellHeader arrowPosition="right" className={classes.colName}>
           <FormattedMessage defaultMessage="Title" />
+        </TableCellHeader>
+
+        <TableCellHeader arrowPosition="right" className={classes.colContent}>
+          <FormattedMessage defaultMessage="Content" />
         </TableCellHeader>
 
         <TableCellHeader textAlign="center" className={classes.colOrders}>
@@ -123,6 +130,10 @@ function PostList(props: any) {
                   />
                 </TableCell>
                 <TableCell className={classes.colName}>
+                  {/* {getUserName(post)} */}
+                  {post && post?.title}
+                </TableCell>
+                <TableCell className={classes.colContent}>
                   {/* {getUserName(post)} */}
                   {post && JSON.parse(tempContent)?.content}
                 </TableCell>
