@@ -236,6 +236,21 @@ export const storeTypeQuery = gql`
 
 export const useListStoreTypeQuery = makeQuery<IStoreType, {}>(storeTypeQuery);
 
+export const deleteStoreMutation = gql`
+  mutation deleteStore($id: ID!) {
+    storeDelete(id: $id) {
+      storeErrors {
+        message
+      }
+      store {
+        id
+      }
+    }
+  }
+`;
+
+export const useDeleteStore = makeMutation<any, {}>(deleteStoreMutation);
+
 export interface IStoreType {
   storeTypes: StoreType | null;
 }

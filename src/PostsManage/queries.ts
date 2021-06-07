@@ -124,3 +124,20 @@ export const postUpdateMutation = gql`
   }
 `;
 export const usePostUpdateMutation = makeMutation<any, any>(postUpdateMutation);
+
+export const postById = gql`
+  query getPostById($id: ID!) {
+    post(id: $id) {
+      id
+      title
+      content
+      media {
+        id
+        image
+        alt
+      }
+    }
+  }
+`;
+
+export const usePostById = makeQuery<any, {}>(postById);

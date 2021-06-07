@@ -35,3 +35,5 @@ export const postListUrl = (params?: PostListUrlQueryParams) =>
   postListPath + "?" + stringifyQs(params);
 
 export const postAddPath = urljoin(postsManagementSection, "add");
+
+export const postEditPath = (id: string) => urljoin(postPath(id), "edit");

@@ -17,7 +17,7 @@ import { Route, Switch } from "react-router-dom";
 
 import PostDetail from "../PostDetail/PostDetail";
 
-const numberOfColumns = 3;
+const numberOfColumns = 4;
 
 const useStyles = makeStyles(
   theme => ({

@@ -1,19 +1,27 @@
+import { DialogContentText } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ActionDialog from "@saleor/components/ActionDialog";
 import { DEFAULT_INITIAL_PAGINATION_DATA } from "@saleor/config";
 import useBulkActions from "@saleor/hooks/useBulkActions";
 import useListSettings from "@saleor/hooks/useListSettings";
 import useNavigator from "@saleor/hooks/useNavigator";
+import useNotifier from "@saleor/hooks/useNotifier";
 import usePaginator, {
   createPaginationState
 } from "@saleor/hooks/usePaginator";
+import { commonMessages } from "@saleor/intl";
 import { maybe } from "@saleor/misc";
-import { useStoreListQuery } from "@saleor/storesManagement/queries";
+import {
+  useDeleteStore,
+  useStoreListQuery
+} from "@saleor/storesManagement/queries";
 import {
   storeAddUrl,
   StoreListUrlQueryParams,
   StoresListUrlDialog,
   storesManagementListUrl,
+  storesManagementSection,
   storeUrl
 } from "@saleor/storesManagement/urls";
 import { ListViews } from "@saleor/types";
@@ -22,15 +30,16 @@ import createFilterHandlers from "@saleor/utils/handlers/filterHandlers";
 import createSortHandler from "@saleor/utils/handlers/sortHandler";
 import { getSortParams } from "@saleor/utils/sort";
 import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import StoreListPage from "../../components/StoreListPage";
 import {
   areFiltersApplied,
   getFilterOpts,
   getFilterQueryParam,
-  getFilterTabs
+  getFilterTabs,
+  getFilterVariables
 } from "./filters";
-import { getFilterVariables } from "./filters";
 import { getSortQueryVariables } from "./sort";
 
 interface CustomerListProps {
@@ -40,6 +49,8 @@ interface CustomerListProps {
 export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
   const navigate = useNavigator();
   const paginate = usePaginator();
+  const notify = useNotifier();
+  const intl = useIntl();
   const { isSelected, listElements, reset, toggle, toggleAll } = useBulkActions(
     params.ids
   );
@@ -76,7 +87,7 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
     [params]
   );
 
-  const { data, loading } = useStoreListQuery({
+  const { data, loading, refetch } = useStoreListQuery({
     displayLoader: true,
     variables: queryVariables
   });
@@ -91,7 +102,7 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
     );
   };
 
-  const [openModal] = createDialogActionHandlers<
+  const [openModal, closeModal] = createDialogActionHandlers<
     StoresListUrlDialog,
     StoreListUrlQueryParams
   >(navigate, storesManagementListUrl, params);
@@ -119,6 +130,32 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
     [settings.rowNumber]
   );
 
+  const [deleteStore] = useDeleteStore({
+    onCompleted: data => {
+      if (data?.storeDelete.storeErrors.length === 0) {
+        notify({
+          status: "success",
+          text: intl.formatMessage(commonMessages.savedChanges)
+        });
+        navigate(storesManagementSection);
+        refetch();
+        //
+      }
+    }
+  });
+
+  const handleDelete = () => {
+    Promise.all(
+      listElements.map(item => {
+        deleteStore({
+          variables: {
+            id: item
+          }
+        });
+      })
+    );
+  };
+
   return (
     <>
       <StoreListPage
@@ -143,14 +180,7 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
         onRowClick={id => () => navigate(storeUrl(id))}
         onSort={handleSort}
         toolbar={
-          <IconButton
-            color="primary"
-            onClick={() =>
-              openModal("remove", {
-                ids: listElements
-              })
-            }
-          >
+          <IconButton color="primary" onClick={() => openModal("remove")}>
             <DeleteIcon />
           </IconButton>
         }
@@ -160,6 +190,29 @@ export const CustomerList: React.FC<CustomerListProps> = ({ params }) => {
         toggle={toggle}
         toggleAll={toggleAll}
       />
+
+      <ActionDialog
+        open={params.action === "remove"}
+        confirmButtonState={"default"}
+        onClose={closeModal}
+        onConfirm={handleDelete}
+        title={intl.formatMessage({
+          defaultMessage: "Delete Store",
+          description: "dialog header"
+        })}
+        variant="delete"
+      >
+        <DialogContentText>
+          <FormattedMessage
+            defaultMessage="{counter,plural,one{Are you sure you want to delete ?} other{Are you sure you want to delete {displayQuantity} store?}}"
+            description="dialog content"
+            values={{
+              counter: params?.ids?.length,
+              displayQuantity: <strong>{params?.ids?.length}</strong>
+            }}
+          />
+        </DialogContentText>
+      </ActionDialog>
     </>
   );
 };

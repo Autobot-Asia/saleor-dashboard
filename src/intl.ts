@@ -37,6 +37,9 @@ export const commonMessages = defineMessages({
   posts: {
     defaultMessage: "Posts"
   },
+  postInfomation: {
+    defaultMessage: "Post Infomation"
+  },
   drafts: {
     defaultMessage: "Drafts"
   },
