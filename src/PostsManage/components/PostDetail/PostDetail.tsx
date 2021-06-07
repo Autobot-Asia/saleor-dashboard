@@ -5,19 +5,23 @@ import {
   Container,
   TextField
 } from "@material-ui/core";
+import AppHeader from "@saleor/components/AppHeader";
 import CardTitle from "@saleor/components/CardTitle";
+import FormSpacer from "@saleor/components/FormSpacer";
 import { PostMediaFragment } from "@saleor/fragments/types/PageCarouselFragment";
 import useNavigator from "@saleor/hooks/useNavigator";
 import useNotifier from "@saleor/hooks/useNotifier";
-import { commonMessages } from "@saleor/intl";
+import { commonMessages, sectionNames } from "@saleor/intl";
 import { postsManagementSection } from "@saleor/PostsManage/urls";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import { useIntl } from "react-intl";
 
 import { usePostCreateMutation, usePostUpdateMutation } from "../../queries";
 import PostMedia from "../PostMedia";
 
 function PostDetail({
+  onBack,
   post,
   placeholderImage,
   carousel,
@@ -118,8 +122,6 @@ function PostDetail({
         }
       });
     }
-
-    // onSubmit();
   };
 
   const handleImageDelete = (id?: string) => () => {
@@ -129,6 +131,11 @@ function PostDetail({
 
   return (
     <Container>
+      <AppHeader onBack={onBack}>
+        {id
+          ? intl.formatMessage(sectionNames.posts)
+          : intl.formatMessage(sectionNames.posts)}
+      </AppHeader>
       <Card>
         <CardTitle title={"Post Manage"} />
         <CardContent>
@@ -152,7 +159,11 @@ function PostDetail({
               setImagesToUpload={setImagesToUpload}
             />
 
-            <Button type="submit">Submit</Button>
+            <FormSpacer />
+
+            <Button color="primary" variant="contained" type="submit">
+              <FormattedMessage defaultMessage="Submit" description="button" />
+            </Button>
           </form>
         </CardContent>
       </Card>
