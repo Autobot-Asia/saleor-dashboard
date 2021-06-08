@@ -17,6 +17,7 @@ interface IProps {
   disabled?: boolean;
   storeId?: string;
   initialValues?: IStoreForUser;
+  userData?: any;
   onBack?: () => void;
   onSubmit?: (data: Partial<StoreDetailVariables>) => void;
   saveButtonBarState?: ConfirmButtonTransitionState;
@@ -39,6 +40,10 @@ export function areAddressInputFieldsModified(
 }
 
 export interface StoreDetailVariables {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   name: string;
   description: string;
   storeType: string;
@@ -61,6 +66,7 @@ export interface SiteSettingsPageFormData extends StoreDetailVariables {
 }
 
 const StoreDetailPage: React.FC<IProps> = ({
+  userData,
   initialValues,
   onBack,
   saveButtonBarState,
@@ -73,47 +79,51 @@ const StoreDetailPage: React.FC<IProps> = ({
   const tempDescription =
     initialValues?.store?.description &&
     initialValues?.store?.description.replace(/'/g, '"');
-
   const tempPhoneCode =
     COUNTRY_LIST.find(e => e.value === initialValues?.store.country)?.code ||
     "";
   const tempPhone = initialValues?.store.phone.replace(tempPhoneCode, "");
-  const initialForm: Partial<any> = initialValues?.store
-    ? {
-        name: initialValues.store.name,
-        description: tempDescription
-          ? JSON.parse(tempDescription)?.description
-          : "",
-        storeType: initialValues.store.storeType?.id,
-        phone: tempPhone,
-        phoneCode: tempPhoneCode,
-        acreage: initialValues.store.acreage,
-        latlong: initialValues.store.latlong,
-        userName: initialValues.store.userName,
-        country: initialValues.store.country,
-        city: initialValues.store.city,
-        postalCode: initialValues.store.postalCode,
-        streetAddress1: initialValues.store.streetAddress1,
-        streetAddress2: initialValues.store.streetAddress2
-      }
-    : {
-        name: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        country: "",
-        phone: "",
-        phoneCode: "",
-        storeType: "",
-        city: "",
-        postalCode: "",
-        description: "",
-        streetAddress1: "",
-        streetAddress2: "",
-        acreage: 0,
-        latlong: latlng
-      };
+  const initialForm: Partial<any> =
+    initialValues?.store && userData?.userStore
+      ? {
+          firstName: userData.userStore.firstName,
+          lastName: userData.userStore.lastName,
+          email: userData.userStore.email,
+          password: userData.userStore.password || "123456a@",
+          name: initialValues.store.name,
+          description: tempDescription
+            ? JSON.parse(tempDescription)?.description
+            : "",
+          storeType: initialValues.store.storeType?.id,
+          phone: tempPhone,
+          phoneCode: tempPhoneCode,
+          acreage: initialValues.store.acreage,
+          latlong: initialValues.store.latlong,
+
+          country: initialValues.store.country,
+          city: initialValues.store.city,
+          postalCode: initialValues.store.postalCode,
+          streetAddress1: initialValues.store.streetAddress1,
+          streetAddress2: initialValues.store.streetAddress2
+        }
+      : {
+          name: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          country: "",
+          phone: "",
+          phoneCode: "",
+          storeType: "",
+          city: "",
+          postalCode: "",
+          description: "",
+          streetAddress1: "",
+          streetAddress2: "",
+          acreage: 0,
+          latlong: latlng
+        };
 
   const validateSchema = yup.object().shape({
     name: yup.string().required("Required!"),
@@ -180,7 +190,7 @@ const StoreDetailPage: React.FC<IProps> = ({
           ...formikProps
         }) => (
           <>
-            <form>
+            <form autoComplete="off">
               <StoreInput
                 {...formikProps}
                 header={intl.formatMessage({
@@ -189,6 +199,7 @@ const StoreDetailPage: React.FC<IProps> = ({
                 })}
                 values={values}
                 handleChange={handleChange}
+                storeId={storeId}
               />
 
               <WrappedMap
@@ -198,7 +209,6 @@ const StoreDetailPage: React.FC<IProps> = ({
                 containerElement={<div style={{ height: `400px` }} />}
                 mapElement={<div style={{ height: `100%` }} />}
                 setFieldValue={data => setFieldValue("latlong", data)}
-                // onClick={() => setFieldValue("latlong", latlong)}
               />
             </form>
 

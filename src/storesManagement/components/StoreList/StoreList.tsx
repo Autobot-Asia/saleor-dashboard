@@ -46,7 +46,7 @@ export interface StoreListProps
   stores: ListStores_stores_edges_node[];
 }
 
-const numberOfColumns = 5;
+const numberOfColumns = 4;
 
 const StoreList: React.FC<StoreListProps> = props => {
   const {

@@ -1,12 +1,11 @@
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { IStoreForUser } from "@saleor/storesManagement/queries";
 import React from "react";
 import { GoogleMap, withGoogleMap, withScriptjs } from "react-google-maps";
 import Marker from "react-google-maps/lib/components/Marker";
 
 interface IProps {
-  store?: IStoreForUser;
+  store?: any;
 }
 
 const useStyles = makeStyles(
@@ -49,40 +48,54 @@ function StoreDetail({ store }: IProps) {
   const WrappedMap = withScriptjs<any>(withGoogleMap(Map));
 
   const storeInfo = store?.store;
+  const userInfo = store?.userStore;
 
   const tempDescription =
     storeInfo?.description && storeInfo?.description.replace(/'/g, '"');
 
-  const Mapping = storeInfo
-    ? {
-        name: { title: "Store Name:", value: storeInfo.name || "" },
-        firstName: { title: "First Name:", value: storeInfo.firstName || "" },
-        email: { title: "Email:", value: storeInfo.email || "" },
-        password: { title: "Password:", value: storeInfo.password },
-        lastName: { title: "Last Name:", value: storeInfo.lastName || "" },
-        userName: { title: "User Name:", value: storeInfo.userName || "" },
+  const Mapping =
+    storeInfo && userInfo
+      ? {
+          name: { title: "Store Name:", value: storeInfo.name || "" },
+          firstName: { title: "First Name:", value: userInfo.firstName || "" },
+          email: { title: "Email:", value: userInfo.email || "" },
+          password: {
+            title: "Password:",
+            value: storeInfo.password || "123456a@"
+          },
+          lastName: { title: "Last Name:", value: userInfo.lastName || "" },
+          userName: { title: "User Name:", value: storeInfo.userName || "" },
 
-        country: { title: "Country:", value: storeInfo.country || "" },
-        city: { title: "City:", value: storeInfo.city || "" },
-        phone: { title: "Phone:", value: storeInfo.phone || "" },
-        postalCode: {
-          title: "ZIP/ PostalCode:",
-          value: storeInfo.postalCode || ""
-        },
-        // area: { title: "Area:", value: storeInfo.area },
-        address1: { title: "Address 1", value: storeInfo.streetAddress1 || "" },
-        address2: { title: "Address 2", value: storeInfo.streetAddress2 || "" },
-        description: {
-          title: "Description:",
-          value: JSON.parse(tempDescription)?.description || ""
-        },
-        storeType: {
-          title: "Store Type:",
-          value: storeInfo.storeType?.name || ""
-        },
-        storeAcreage: { title: "Store Acreage", value: storeInfo.acreage || "" }
-      }
-    : {};
+          country: { title: "Country:", value: storeInfo.country || "" },
+          city: { title: "City:", value: storeInfo.city || "" },
+          phone: { title: "Phone:", value: storeInfo.phone || "" },
+          postalCode: {
+            title: "ZIP/ PostalCode:",
+            value: storeInfo.postalCode || ""
+          },
+          // area: { title: "Area:", value: storeInfo.area },
+          address1: {
+            title: "Address 1",
+            value: storeInfo.streetAddress1 || ""
+          },
+          address2: {
+            title: "Address 2",
+            value: storeInfo.streetAddress2 || ""
+          },
+          description: {
+            title: "Description:",
+            value: JSON.parse(tempDescription)?.description || ""
+          },
+          storeType: {
+            title: "Store Type:",
+            value: storeInfo.storeType?.name || ""
+          },
+          storeAcreage: {
+            title: "Store Acreage",
+            value: storeInfo.acreage || ""
+          }
+        }
+      : {};
 
   const isShowMap = store?.store?.latlong && store?.store?.latlong !== "";
 

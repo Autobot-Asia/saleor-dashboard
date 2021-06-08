@@ -63,6 +63,14 @@ function PostList(props: any) {
   } = props;
   const classes = useStyles(props);
 
+  const formatDate = (date: Date) => {
+    if (!date) {
+      return;
+    }
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString();
+  };
+
   return (
     <ResponsiveTable>
       <TableHead
@@ -81,7 +89,7 @@ function PostList(props: any) {
           <FormattedMessage defaultMessage="Content" />
         </TableCellHeader>
 
-        <TableCellHeader textAlign="center" className={classes.colOrders}>
+        <TableCellHeader arrowPosition="right" className={classes.colOrders}>
           <FormattedMessage defaultMessage="Joined date" />
         </TableCellHeader>
       </TableHead>
@@ -139,7 +147,7 @@ function PostList(props: any) {
                 </TableCell>
 
                 <TableCell className={classes.colOrders}>
-                  {/* {post && formatDate(post.dateJoined)} */}
+                  {post && formatDate(post.updatedAt)}
                 </TableCell>
               </TableRow>
             );

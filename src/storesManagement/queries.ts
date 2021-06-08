@@ -104,8 +104,25 @@ export const useUpdateStoreMutation = makeMutation<
 >(storeUpdateMutation);
 //
 
+export const updateUser = gql`
+  mutation updateUser($input: AccountInput!) {
+    accountUpdate(input: $input) {
+      user {
+        email
+        id
+      }
+    }
+  }
+`;
+
+export const useUpdateUser = makeMutation<any, any>(updateUser);
+
 const storeRegisterMutation = gql`
   mutation createStore(
+    $firstName: String!
+    $lastName: String!
+    $email: String!
+    $password: String!
     $storeTypeId: ID!
     $name: String
     $description: JSONString
@@ -122,6 +139,10 @@ const storeRegisterMutation = gql`
   ) {
     storeCreate(
       input: {
+        firstName: $firstName
+        lastName: $lastName
+        email: $email
+        password: $password
         name: $name
         description: $description
         storeType: $storeTypeId
@@ -173,6 +194,10 @@ export const useStoreListQuery = makeQuery<ListStores, ListStoresVariables>(
 export const storeForUser = gql`
   query stores($id: ID!) {
     store(id: $id) {
+      # firstName
+      # lastName
+      # email
+      # password
       name
       description
       phone
@@ -251,6 +276,19 @@ export const deleteStoreMutation = gql`
 
 export const useDeleteStore = makeMutation<any, {}>(deleteStoreMutation);
 
+export const userStoreGet = gql`
+  query userStoreGet($id: ID!) {
+    userStore(storeId: $id) {
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+`;
+
+export const useUserStoreGet = makeQuery<any, {}>(userStoreGet);
+
 export interface IStoreType {
   storeTypes: StoreType | null;
 }
@@ -315,6 +353,10 @@ export interface UpdateStore_storeUpdate_errors {
 }
 
 export interface UpdateStoreVariables {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
   name: string;
   id: string;
   description?: string;
@@ -332,6 +374,10 @@ export interface UpdateStoreVariables {
 }
 
 export interface RegisterStoreVariables {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   name: string;
   description?: string;
   country?: string;

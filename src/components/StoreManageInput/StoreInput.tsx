@@ -10,18 +10,25 @@ interface IProps {
   header: string;
   handleChange: FormChange;
   values: Partial<StoreDetailVariables>;
+  storeId?: any;
 }
 
 const StoreInput: React.FC<IProps> = ({
   header,
   values,
   handleChange,
+  storeId,
   ...formikProps
 }) => (
   <Card>
     <CardTitle title={header} />
     <CardContent>
-      <StoreForm {...formikProps} values={values} handleChange={handleChange} />
+      <StoreForm
+        {...formikProps}
+        storeId={storeId}
+        values={values}
+        handleChange={handleChange}
+      />
     </CardContent>
   </Card>
 );

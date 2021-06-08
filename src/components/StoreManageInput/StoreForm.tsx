@@ -13,11 +13,13 @@ interface Props {
   values: Partial<any>;
   handleChange: FormChange;
   formikProps?: any;
+  storeId?: any;
 }
 
 const StoreForm: React.FC<Props> = ({
   values,
   handleChange,
+  storeId,
   ...formikProps
 }) => {
   const { errors, touched, handleBlur }: any = formikProps;
@@ -96,8 +98,10 @@ const StoreForm: React.FC<Props> = ({
           defaultMessage: "Email Address*"
         })}
         fullWidth
+        value={values.email}
         name="email"
         onChange={handleChange}
+        disabled={storeId && true}
         onBlur={handleBlur}
         error={errors.email && touched.email}
         helperText={errors.email && touched.email && errors.email}
@@ -111,8 +115,10 @@ const StoreForm: React.FC<Props> = ({
         fullWidth
         name="password"
         type="password"
+        value={values.password}
         onChange={handleChange}
         onBlur={handleBlur}
+        disabled={storeId && true}
         error={errors.password && touched.password}
         helperText={errors.password && touched.password && errors.password}
       />

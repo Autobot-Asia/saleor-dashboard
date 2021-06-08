@@ -4,7 +4,7 @@ import useNavigator from "@saleor/hooks/useNavigator";
 import React from "react";
 
 import StoreDetailInfomationPage from "../components/StoreDetailInfomationPage/StoreDetailInfomationPage";
-import { useStoreById } from "../queries";
+import { useStoreById, useUserStoreGet } from "../queries";
 import { storesManagementSection, StoreUrlQueryParams } from "../urls";
 interface IProps {
   id: string;
@@ -19,13 +19,18 @@ const StoreDetailInfomation: React.FC<IProps> = ({ id }) => {
     variables: { id }
   });
 
+  const { data: dataUser } = useUserStoreGet({
+    displayLoader: true,
+    variables: { id }
+  });
+
   return (
     <>
       <WindowTitle title="Store detail" />
       <StoreDetailInfomationPage
         disabled={loading}
         storeId={id}
-        initialValues={data}
+        initialValues={{ ...data, ...dataUser }}
         onBack={() => navigate(storesManagementSection)}
       />
     </>

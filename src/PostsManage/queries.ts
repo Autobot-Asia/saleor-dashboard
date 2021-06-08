@@ -24,6 +24,7 @@ export const listPost = gql`
         node {
           id
           title
+          updatedAt
           content
           media {
             id
@@ -46,6 +47,7 @@ const getListMedia = gql`
       id
       title
       content
+      updatedAt
       media {
         id
         image

@@ -14,7 +14,8 @@ import {
   UpdateStoreVariables,
   useCreateStoreMutation,
   useStoreById,
-  useUpdateStoreMutation
+  useUpdateStoreMutation,
+  useUserStoreGet
 } from "../queries";
 import {
   storePath,
@@ -34,6 +35,11 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
 
   if (id !== "undefined") {
     const { data, loading, refetch } = useStoreById({
+      displayLoader: true,
+      variables: { id }
+    });
+
+    const { data: userData } = useUserStoreGet({
       displayLoader: true,
       variables: { id }
     });
@@ -60,6 +66,10 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
       const variables: UpdateStoreVariables = {
         // add more fields here
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
         name: data.name,
         id,
         country: data.country,
@@ -75,7 +85,6 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
         phone: data.phoneCode + data.phone,
         latlong: data.latlong
       };
-
       updateStore({
         variables
       });
@@ -88,6 +97,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
           disabled={loading}
           storeId={id}
           initialValues={data}
+          userData={userData}
           onBack={() => navigate(storePath(id))}
           handleRefetch={refetch}
           onSubmit={handleSubmit}
@@ -116,6 +126,10 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
 
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
       const variables: RegisterStoreVariables = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
         name: data.name,
         storeTypeId: data.storeType,
         acreage: data.acreage,
