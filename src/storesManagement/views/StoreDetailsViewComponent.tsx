@@ -11,7 +11,6 @@ import StoreDetailPage, {
 } from "../components/StoreDetailPage/StoreDetailPage";
 import {
   RegisterStoreVariables,
-  UpdateStoreVariables,
   useCreateStoreMutation,
   useStoreById,
   useUpdateStoreMutation,
@@ -64,7 +63,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
     });
 
     const handleSubmit = (data: Partial<StoreDetailVariables>) => {
-      const variables: UpdateStoreVariables = {
+      const variables: any = {
         // add more fields here
         firstName: data.firstName,
         lastName: data.lastName,
@@ -72,6 +71,7 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
         password: data.password,
         name: data.name,
         id,
+        userId: userData.userStore.id,
         country: data.country,
         city: data.city,
         postalCode: data.postalCode,

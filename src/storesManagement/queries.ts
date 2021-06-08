@@ -42,7 +42,9 @@ const storeUpdateMutation = gql`
   mutation storeUpdate(
     $id: ID!
     $storeTypeId: ID!
-    $name: String
+    $name: String!
+    $firstName: String!
+    $lastName: String!
     $description: JSONString
     $phone: String!
     $acreage: Float
@@ -51,6 +53,7 @@ const storeUpdateMutation = gql`
     $backgroundImageAlt: String
     $country: CountryCode
     $city: String
+    $userId: ID!
     $postalCode: String
     $streetAddress1: String
     $streetAddress2: String
@@ -58,7 +61,10 @@ const storeUpdateMutation = gql`
     storeUpdate(
       id: $id
       input: {
+        userId: $userId
         name: $name
+        firstName: $firstName
+        lastName: $lastName
         description: $description
         storeType: $storeTypeId
         phone: $phone
@@ -124,7 +130,7 @@ const storeRegisterMutation = gql`
     $email: String!
     $password: String!
     $storeTypeId: ID!
-    $name: String
+    $name: String!
     $description: JSONString
     $phone: String!
     $acreage: Float
