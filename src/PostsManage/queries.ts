@@ -79,6 +79,21 @@ export const postCreateMutation = gql`
 `;
 export const usePostCreateMutation = makeMutation<any, any>(postCreateMutation);
 
+export const postDeleteBulkMutation = gql`
+  mutation deleteMedia($ids: [ID]!) {
+    postMediaBulkDelete(ids: $ids) {
+      menuErrors {
+        message
+      }
+      count
+    }
+  }
+`;
+
+export const usePostDeleteBulkMutation = makeMutation<any, any>(
+  postDeleteBulkMutation
+);
+
 // createPost Media
 export const postMediaCreateMutation = gql`
   mutation createMedia($post: ID!, $image: Upload, $alt: String) {

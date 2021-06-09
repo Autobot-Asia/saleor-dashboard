@@ -17,7 +17,11 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useIntl } from "react-intl";
 
-import { usePostCreateMutation, usePostUpdateMutation } from "../../queries";
+import {
+  usePostCreateMutation,
+  usePostDeleteBulkMutation,
+  usePostUpdateMutation
+} from "../../queries";
 import PostMedia from "../PostMedia";
 
 function PostDetail({
@@ -50,6 +54,18 @@ function PostDetail({
     setImagesToUpload(carousel);
   }, [post]);
 
+  const [deleteMedia] = usePostDeleteBulkMutation({
+    onCompleted: data => {
+      if (data.postMediaBulkDelete.menuErrors.length === 0) {
+        notify({
+          status: "success",
+          text: `${data.postMediaBulkDelete.count} has been deleted!`
+        });
+        navigate(postsManagementSection);
+      }
+    }
+  });
+
   const [createPost] = usePostCreateMutation({
     onCompleted: data => {
       const id = data?.postCreate?.post?.id;
@@ -77,6 +93,11 @@ function PostDetail({
   const [updatePost] = usePostUpdateMutation({
     onCompleted: data => {
       const id = data?.postUpdate?.post?.id;
+      deleteMedia({
+        variables: {
+          ids: tempImgDelete
+        }
+      });
       Promise.all(
         imagesToUpload.map(item => {
           if (tempImgDelete.indexOf(item.id) > 0) {
@@ -143,6 +164,11 @@ function PostDetail({
   const handleImageDelete = (id?: string) => () => {
     tempImgDelete.push(id);
     setTempImgDelete([...tempImgDelete]);
+    const index = imagesToUpload.findIndex(e => e.id === id);
+    if (index !== -1) {
+      imagesToUpload.splice(index, 1);
+      setImagesToUpload([...imagesToUpload]);
+    }
   };
 
   return (

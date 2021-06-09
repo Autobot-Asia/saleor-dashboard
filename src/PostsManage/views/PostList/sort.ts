@@ -4,8 +4,8 @@ import { createGetSortQueryVariables } from "@saleor/utils/sort";
 
 export function getSortQueryField(sort: PostListUrlSortField): PostSortField {
   switch (sort) {
-    case PostListUrlSortField.name:
-      return PostSortField.NAME;
+    // case PostListUrlSortField.name:
+    //   return PostSortField.NAME;
     case PostListUrlSortField.date:
       return PostSortField.UPDATEDAT;
 
