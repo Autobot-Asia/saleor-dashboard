@@ -11,6 +11,8 @@ import TableCellHeader from "@saleor/components/TableCellHeader";
 import TableHead from "@saleor/components/TableHead";
 import TablePagination from "@saleor/components/TablePagination";
 import { renderCollection } from "@saleor/misc";
+import { PostListUrlSortField } from "@saleor/PostsManage/urls";
+import { getArrowDirection } from "@saleor/utils/sort";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { Route, Switch } from "react-router-dom";
@@ -59,7 +61,9 @@ function PostList(props: any) {
     toggle,
     toggleAll,
     selected,
-    isChecked
+    isChecked,
+    sort,
+    onSort
   } = props;
   const classes = useStyles(props);
 
@@ -89,8 +93,13 @@ function PostList(props: any) {
           <FormattedMessage defaultMessage="Content" />
         </TableCellHeader>
 
-        <TableCellHeader arrowPosition="right" className={classes.colOrders}>
-          <FormattedMessage defaultMessage="Joined date" />
+        <TableCellHeader
+          arrowPosition="right"
+          direction={sort.sort ? getArrowDirection(sort.asc) : undefined}
+          className={classes.colOrders}
+          onClick={() => onSort(PostListUrlSortField.date)}
+        >
+          <FormattedMessage defaultMessage="Created date" />
         </TableCellHeader>
       </TableHead>
       <TableFooter>

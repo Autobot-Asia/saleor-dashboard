@@ -12,6 +12,7 @@ export const listPost = gql`
     $first: Int
     $last: Int
     $filter: PostFilterInput # $channel: String
+    $sort: PostSortingInput
   ) {
     posts(
       after: $after
@@ -19,6 +20,7 @@ export const listPost = gql`
       first: $first
       last: $last
       filter: $filter #   channel: $channel
+      sortBy: $sort
     ) {
       edges {
         node {

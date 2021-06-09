@@ -186,9 +186,14 @@ function PostDetail({
 
             <FormSpacer />
 
-            <Button color="primary" variant="contained" type="submit">
-              <FormattedMessage defaultMessage="Submit" description="button" />
-            </Button>
+            <div style={{ textAlign: "right" }}>
+              <Button color="primary" variant="contained" type="submit">
+                <FormattedMessage
+                  defaultMessage="Submit"
+                  description="button"
+                />
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

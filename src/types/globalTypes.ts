@@ -858,6 +858,12 @@ export enum SaleSortField {
   VALUE = "VALUE",
 }
 
+export enum PostSortField {
+ 
+  NAME = "NAME",
+  UPDATEDAT = "UPDATEDAT",
+}
+
 export enum SaleType {
   FIXED = "FIXED",
   PERCENTAGE = "PERCENTAGE",

@@ -19,20 +19,23 @@ import {
 } from "@saleor/PostsManage/queries";
 import {
   postAddPath,
+  postListUrl,
   PostListUrlQueryParams,
+  PostListUrlSortField,
   PostsListUrlDialog,
   postsManagementListUrl,
   postsManagementSection,
   postUrl
 } from "@saleor/PostsManage/urls";
 import { getFilterVariables } from "@saleor/storesManagement/views/StoreList/filters";
-import { getSortQueryVariables } from "@saleor/storesManagement/views/StoreList/sort";
 import { ListViews } from "@saleor/types";
 import createDialogActionHandlers from "@saleor/utils/handlers/dialogActionHandlers";
 import createSortHandler from "@saleor/utils/handlers/sortHandler";
 import { getSortParams } from "@saleor/utils/sort";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+
+import { getSortQueryVariables } from "./sort";
 
 interface IProps {
   params: any;
@@ -95,6 +98,21 @@ function PostList({ params }: IProps) {
       ),
     [settings.rowNumber]
   );
+
+  React.useEffect(() => {
+    const sortWithQuery = PostListUrlSortField.date;
+    // const sortWithoutQuery =
+    //   params.sort === PostListUrlSortField.date
+    //     ? PostListUrlSortField.date
+    //     : params.sort;
+    navigate(
+      postListUrl({
+        ...params,
+        asc: params.asc,
+        sort: params.query ? sortWithQuery : "date"
+      })
+    );
+  }, [params.query]);
 
   const [deletePost] = usePostDeleteMutation({
     onCompleted: data => {

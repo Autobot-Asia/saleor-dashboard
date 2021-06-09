@@ -58,14 +58,12 @@ function StoreDetail({ store }: IProps) {
       ? {
           name: { title: "Store Name:", value: storeInfo.name || "" },
           firstName: { title: "First Name:", value: userInfo.firstName || "" },
+          lastName: { title: "Last Name:", value: userInfo.lastName || "" },
           email: { title: "Email:", value: userInfo.email || "" },
           password: {
             title: "Password:",
-            value: storeInfo.password || "123456a@"
+            value: storeInfo.password || "******"
           },
-          lastName: { title: "Last Name:", value: userInfo.lastName || "" },
-          userName: { title: "User Name:", value: storeInfo.userName || "" },
-
           country: { title: "Country:", value: storeInfo.country || "" },
           city: { title: "City:", value: storeInfo.city || "" },
           phone: { title: "Phone:", value: storeInfo.phone || "" },

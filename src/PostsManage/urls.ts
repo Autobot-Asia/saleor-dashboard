@@ -3,6 +3,7 @@ import {
   BulkAction,
   Dialog,
   Pagination,
+  Sort,
   TabActionDialog
 } from "@saleor/types";
 import { stringifyQs } from "@saleor/utils/urls";
@@ -17,6 +18,13 @@ export const postsManagementListUrl = (params?: any) =>
 export const postPath = (id: string) => urljoin(postsManagementSection, id);
 
 export type PostUrlDialog = "delete";
+
+export enum PostListUrlSortField {
+  name = "name",
+  date = "date"
+}
+
+export type PostListUrlSort = Sort<PostListUrlSortField>;
 
 export type PostListUrlQueryParams = ActiveTab &
   BulkAction &
