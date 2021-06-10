@@ -192,8 +192,8 @@ const PostMedia: React.FC<PageCarouselProps> = props => {
           <>
             <Button
               variant="text"
-              color={carousel && carousel.length > 4 ? "default" : "primary"}
-              disabled={carousel && carousel.length > 4}
+              color={carousel && carousel.length > 20 ? "default" : "primary"}
+              disabled={carousel && carousel.length > 20}
               onClick={handleImageUploadButtonClick}
             >
               <FormattedMessage {...commonMessages.uploadImage} />

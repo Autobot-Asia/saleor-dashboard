@@ -5,12 +5,12 @@ import CardTitle from "@saleor/components/CardTitle";
 import CarouselTile from "@saleor/components/CarouselTile";
 import ImageUpload from "@saleor/components/ImageUpload";
 import { PageCarouselFragment } from "@saleor/fragments/types/PageCarouselFragment";
-import { commonMessages } from "@saleor/intl";
+// import { commonMessages } from "@saleor/intl";
 import { makeStyles } from "@saleor/theme";
 import createMultiFileUploadHandler from "@saleor/utils/handlers/multiFileUploadHandler";
 import classNames from "classnames";
 import React from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 const useStyles = makeStyles(
@@ -193,7 +193,7 @@ const PageCarousel: React.FC<PageCarouselProps> = props => {
               disabled={carousel && carousel.length > 4}
               onClick={handleImageUploadButtonClick}
             >
-              <FormattedMessage {...commonMessages.uploadImage} />
+              {carousel && carousel.length > 4 ? "Maximum" : "Upload Image"}
             </Button>
             <input
               className={classes.fileField}
