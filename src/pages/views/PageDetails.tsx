@@ -229,6 +229,7 @@ export const PageDetails: React.FC<PageDetailsProps> = ({ id, params }) => {
           text: intl.formatMessage(commonMessages.savedChanges)
         });
       }
+      setRerender(true);
     }
   });
 
