@@ -19,7 +19,10 @@ const useStyles = makeStyles(
       // color:
     },
     title: {
-      fontSize: "1rem"
+      fontSize: "1rem",
+      overflow: "hidden",
+      wordWrap: "break-word",
+      whiteSpace: "pre-wrap"
     }
   },
   { name: "C:Devsaleor-dashboardsrccomponentsStoreManageInputStoreDetail" }
