@@ -32,7 +32,10 @@ const useStyles = makeStyles(
     },
     colEmail: {},
     colName: {
-      paddingLeft: 0
+      paddingLeft: 0,
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      whiteSpace: "nowrap"
     },
     colContent: {
       width: 700,
