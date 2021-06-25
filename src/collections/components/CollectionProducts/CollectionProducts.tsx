@@ -34,16 +34,18 @@ const useStyles = makeStyles(
     },
     colName: {
       paddingLeft: 0,
-      width: "auto"
+      width: "auto",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
     },
     colNameLabel: {
       marginLeft: AVATAR_MARGIN
     },
     colPublished: {
-      width: 200
+      maxWidth: 200
     },
     colType: {
-      width: 200
+      maxWidth: 200
     },
     table: {
       tableLayout: "fixed"
