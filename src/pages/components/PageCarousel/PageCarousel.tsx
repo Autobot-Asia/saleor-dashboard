@@ -181,7 +181,7 @@ const PageCarousel: React.FC<PageCarouselProps> = props => {
     }
   });
 
-  const checkImageBeforeUpdate = (event: any) => {
+  const checkImageBeforeUpdate = (event: FileList) => {
     if (event.length + carousel.length > 5) {
       notify({
         status: "error",
