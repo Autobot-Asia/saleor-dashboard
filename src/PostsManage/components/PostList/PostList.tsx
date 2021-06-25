@@ -38,7 +38,7 @@ const useStyles = makeStyles(
       whiteSpace: "nowrap"
     },
     colContent: {
-      width: 700,
+      maxWidth: 700,
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis"
