@@ -17,6 +17,7 @@ import ErrorPage from "../ErrorPage";
 import Navigator from "../Navigator";
 import NavigatorButton from "../NavigatorButton/NavigatorButton";
 import SideBar from "../SideBar";
+import { menuWidth } from "../SideBar/MenuItem";
 import SideBarDrawer from "../SideBarDrawer/SideBarDrawer";
 import UserChip from "../UserChip";
 import AppActionContext from "./AppActionContext";
@@ -52,7 +53,11 @@ const useStyles = makeStyles(
     },
 
     content: {
-      flex: 1
+      flex: 1,
+      maxWidth: `calc(100% - ${menuWidth}px)`,
+      [theme.breakpoints.down("sm")]: {
+        maxWidth: "100%"
+      }
     },
     darkThemeSwitch: {
       [theme.breakpoints.down("sm")]: {
