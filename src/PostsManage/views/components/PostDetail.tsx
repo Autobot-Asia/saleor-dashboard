@@ -12,7 +12,10 @@ const useStyles = makeStyles({
     // color:
   },
   title: {
-    fontSize: "1rem"
+    fontSize: "1rem",
+    overflowWrap: "break-word",
+    wordWrap: "break-word",
+    hyphens: "auto"
   },
   img: {
     width: 150,
