@@ -20,18 +20,17 @@ const useStyles = makeStyles(
   theme => ({
     [theme.breakpoints.up("lg")]: {
       colEmail: {},
-      colName: {
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        whiteSpace: "nowrap"
-      },
+      colName: {},
       colOrders: {
         width: 200
       }
     },
     colEmail: {},
     colName: {
-      paddingLeft: 0
+      paddingLeft: 0,
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      whiteSpace: "nowrap"
     },
     colOrders: {
       textAlign: "center"
