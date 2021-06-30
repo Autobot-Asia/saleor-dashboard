@@ -5,6 +5,7 @@ import CardTitle from "@saleor/components/CardTitle";
 import CarouselTile from "@saleor/components/CarouselTile";
 import ImageUpload from "@saleor/components/ImageUpload";
 import { PageCarouselFragment } from "@saleor/fragments/types/PageCarouselFragment";
+import useNotifier from "@saleor/hooks/useNotifier";
 // import { commonMessages } from "@saleor/intl";
 import { makeStyles } from "@saleor/theme";
 import createMultiFileUploadHandler from "@saleor/utils/handlers/multiFileUploadHandler";
@@ -148,6 +149,7 @@ interface PageCarouselProps {
 const PageCarousel: React.FC<PageCarouselProps> = props => {
   const { onImageDelete, onImageUpload, carousel, placeholderImage } = props;
   const classes = useStyles(props);
+  const notify = useNotifier();
   const intl = useIntl();
   const imagesUpload = React.useRef<HTMLInputElement>(null);
   const [imagesToUpload, setImagesToUpload] = React.useState<
@@ -178,6 +180,20 @@ const PageCarousel: React.FC<PageCarouselProps> = props => {
       });
     }
   });
+
+  const checkImageBeforeUpdate = (event: FileList) => {
+    if (event.length + carousel.length > 5) {
+      notify({
+        status: "error",
+        text: intl.formatMessage({
+          defaultMessage: "You can upload maximum 5 images!"
+        })
+      });
+      return;
+    }
+    handleImageUpload(event);
+  };
+
   return (
     <Card className={classes.card}>
       <CardTitle
@@ -193,12 +209,12 @@ const PageCarousel: React.FC<PageCarouselProps> = props => {
               disabled={carousel && carousel.length > 4}
               onClick={handleImageUploadButtonClick}
             >
-              {carousel && carousel.length > 4 ? "Maximum" : "Upload Image"}
+              {carousel && carousel.length > 4 ? "" : "Upload Image"}
             </Button>
             <input
               className={classes.fileField}
               id="fileUpload"
-              onChange={event => handleImageUpload(event.target.files)}
+              onChange={event => checkImageBeforeUpdate(event.target.files)}
               multiple
               type="file"
               ref={imagesUpload}
