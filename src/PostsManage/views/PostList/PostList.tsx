@@ -65,16 +65,16 @@ function PostList({ params }: IProps) {
     [params]
   );
 
+  const { data, loading, refetch } = usePostListQuery({
+    displayLoader: true,
+    variables: queryVariables
+  });
+
   const { loadNextPage, loadPreviousPage, pageInfo } = paginate(
     maybe(() => data.posts.pageInfo),
     paginationState,
     params
   );
-
-  const { data, loading, refetch } = usePostListQuery({
-    displayLoader: true,
-    variables: queryVariables
-  });
 
   const [openModal, closeModal] = createDialogActionHandlers<
     PostsListUrlDialog,
