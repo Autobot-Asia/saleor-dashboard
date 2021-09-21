@@ -1,4 +1,5 @@
 import { WindowTitle } from "@saleor/components/WindowTitle";
+import messages from "@saleor/containers/BackgroundTasks/messages";
 import useNavigator from "@saleor/hooks/useNavigator";
 import useNotifier from "@saleor/hooks/useNotifier";
 import { commonMessages } from "@saleor/intl";
@@ -51,6 +52,16 @@ const StoreDetailsViewComponent: React.FC<IProps> = ({ id }) => {
             text: intl.formatMessage(commonMessages.savedChanges)
           });
           navigate(storePath(id));
+        } else if (
+          data.storeUpdate.storeErrors[0].message ===
+          "Store Name already exists"
+        ) {
+          notify({
+            status: "error",
+            text: intl.formatMessage({
+              defaultMessage: "Store Name already exists!"
+            })
+          });
         } else {
           notify({
             status: "error",
